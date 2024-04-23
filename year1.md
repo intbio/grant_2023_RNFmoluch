@@ -8,7 +8,9 @@
 * [НУКЛ<sub>TIP4P-D</sub>](trajectories/ncp_tip4pd) - траектория МД нуклеосомы в окружении воды модели TIP4P-D в силовом поле Amber ff14SB + ParmBSC1 коррекции +Li/Merz ионы 
 * [НУКЛ<sub>TIP4P-D, CUFIX</sub>](trajectories/ncp_tip4pd_cufix) - траектория МД нуклеосомы в окружении воды модели TIP4P-D в силовом поле Amber ff14SB + ParmBSC1 коррекции + CUFIX ионы 
 * [НУКЛ<sub>TIP4P-2005</sub>](trajectories/ncp_tip4p2005) - траектория МД нуклеосомы в окружении воды модели TIP4P-2005 в силовом поле Amber ff14SB + ParmBSC1 коррекции +Li/Merz ионы 
-* [НУКЛ<sub>TIP4P-2005, CUFIX</sub>](trajectories/ncp_tip4p2005_cufix) - траектория МД нуклеосомы в окружении воды модели TIP4P-2005 в силовом поле Amber ff14SB + ParmBSC1 коррекции + CUFIX ионы 
+* [НУКЛ<sub>TIP4P-2005, CUFIX</sub>](trajectories/ncp_tip4p2005_cufix) - траектория МД нуклеосомы в окружении воды модели TIP4P-2005 в силовом поле Amber ff14SB + ParmBSC1 коррекции + CUFIX ионы
+* [НУКЛ<sub>OPC</sub>](trajectories/ncp_opc) - траектория МД нуклеосомы в окружении воды модели OPC в силовом поле Amber ff14SB + ParmBSC1 коррекции + Li-Merz ионы 
+* [НУКЛ<sub>TIP3P, CUFIX</sub>](trajectories/ncp_tip3p_opc) - траектория МД нуклеосомы в окружении воды модели TIP3P в силовом поле Amber ff14SB + ParmBSC1 коррекции + CUFIX ионы 
 
 #### Задача 5.4. Траектории молекулярной динамики 
 * Тестовый расчет МД додекамера Дрю-Дикерсона с применением внешнего гармонического потенциала на коллективную переменную кручения ДНК 
