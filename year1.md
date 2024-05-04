@@ -9,9 +9,9 @@
 * [НУКЛ-Sox2<sub>pos50</sub>](constructed_complexes/sox2_pos_50_shift_1) - структура нуклеосомы в комплексе с Sox2 на позиции 50 (сдвиг нуклеосомной ДНК на 1 нуклеотид)
 
 #### Задача 4.1. 
-* [Oct4_interactors](PTF_interactors/) - белки-партнеры Oct4 по данным STRING, BioGRID и Gene Ontology
-* [Sox2_interactors](PTF_interactors/) - белки-партнеры Sox2 по данным STRING, BioGRID и Gene Ontology
-* [Klf4_interactors](PTF_interactors/) - белки-партнеры Klf4 по данным STRING, BioGRID и Gene Ontology
+* [Oct4_interactors](PTF_interactors/oct4_interactors.html) - белки-партнеры Oct4 по данным STRING, BioGRID и Gene Ontology
+* [Sox2_interactors](PTF_interactors/sox2_interactors.html) - белки-партнеры Sox2 по данным STRING, BioGRID и Gene Ontology
+* [Klf4_interactors](PTF_interactors/klf4_interactors.html) - белки-партнеры Klf4 по данным STRING, BioGRID и Gene Ontology
 * [PDB](PTF_structures/) - структуры комплексов Oct4, Sox2 и Klf4 и белками-партнерами в формате PDB
   
 #### В части молекулярного моделирования
