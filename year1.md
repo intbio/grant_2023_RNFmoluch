@@ -13,6 +13,7 @@
 * [Sox2_interactors](PTF_interactors/sox2_interactors.html) - белки-партнеры Sox2 по данным STRING, BioGRID и Gene Ontology
 * [Klf4_interactors](PTF_interactors/klf4_interactors.html) - белки-партнеры Klf4 по данным STRING, BioGRID и Gene Ontology
 * [PDB](PTF_structures/) - структуры комплексов Oct4, Sox2 и Klf4 и белками-партнерами в формате PDB
+* [PTF_best_structures](PTF_structures/best.html) - визуализация лучших по качеству структур комплексов ПТФ с белками-партнерами
   
 #### В части молекулярного моделирования
 #### Задача 5.1. Траектории молекулярной динамики нуклеосом в окружении разных моделей воды 
