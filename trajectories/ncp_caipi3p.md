@@ -51,7 +51,7 @@
   var pdb="1kx5_in_CAIPi3P_water_amber_nrf.pdb"
   var xtc="1kx5_in_CAIPi3P_water_amber_filtered.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 0.001;
+  var trjstep = 0.5;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
