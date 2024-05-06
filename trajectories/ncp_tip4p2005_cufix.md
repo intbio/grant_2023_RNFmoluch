@@ -1,4 +1,4 @@
-### НУКЛ<sub>CAIPi3P, CUFIX</sub> - траектория МД нуклеосомы в окружении воды модели TIP4P2005 в силовом поле Amber ff14SB + ParmBSC1 коррекции + CUFIX
+### НУКЛ<sub>TIP4P-2005, CUFIX</sub> - траектория МД нуклеосомы в окружении воды модели TIP4P-2005 в силовом поле Amber ff14SB + ParmBSC1 коррекции + CUFIX ионы
 [Назад](http://intbio.github.io/grant_2023_RNFmoluch/)
 
 <html lang="en">
