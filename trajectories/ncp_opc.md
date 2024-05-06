@@ -1,4 +1,4 @@
-### НУКЛ<sub>CAIPi3P, CUFIX</sub> - траектория МД нуклеосомы в окружении воды модели OPC в силовом поле Amber ff19SB + OL3 
+### НУКЛ<sub>OPC</sub> - траектория МД нуклеосомы в окружении воды модели OPC в силовом поле Amber ff14SB + ParmBSC1 коррекции + Li-Merz ионы 
 [Назад](http://intbio.github.io/grant_2023_RNFmoluch/)
 
 <html lang="en">
