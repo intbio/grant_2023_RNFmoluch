@@ -438,7 +438,7 @@
           .attr("text-anchor", "end")
           .attr("x", width-width/2)
           .attr("y", height + 35)
-          .text("Time, μs");
+          .text("Time, ns");
           
           svg.append("text")
           .attr("class", "y label")
