@@ -51,7 +51,7 @@
   var pdb="1kx5_in_TIP4P2005_water_no_cufix_amber_nrf.pdb"
   var xtc="1kx5_in_TIP4P2005_water_no_cufix_amber_filtered.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 4;
+  var trjstep = 10;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
