@@ -51,7 +51,7 @@
   var pdb="1kx5_in_CAIPi3P_water_cufix_amber_nrf.pdb"
   var xtc="1kx5_in_CAIPi3P_water_cufix_amber_filtered.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 0.1;
+  var trjstep = 4;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
@@ -438,7 +438,7 @@
           .attr("text-anchor", "end")
           .attr("x", width-width/2)
           .attr("y", height + 35)
-          .text("Time, μs");
+          .text("Time, ns");
           
           svg.append("text")
           .attr("class", "y label")
@@ -531,11 +531,9 @@
       <button type="submit" class="btn" name="play_button" data-toggle="button" id='play' onclick='window.traj.player.play();'>Play</button>
       <button type="submit" class="btn" name="play_button" data-toggle="button" id='pause' onclick='window.traj.player.pause();'>Pause</button>
       <input type="range" min="0" max="100" value="0" class="slider" id="myRange">
-      <p>Time: <span id="frame_counter"></span> μs</p>
+      <p>Time: <span id="frame_counter"></span> ns</p>
 
     </div>
-    <div id='tooltip' style='position:absolute;background-color:lightgray;padding:5px'></div>
-    
 
   </body>
 </html>
