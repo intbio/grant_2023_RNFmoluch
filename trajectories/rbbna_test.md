@@ -51,7 +51,7 @@
   var pdb="rbbna_test.pdb"
   var xtc="rbbna_test.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 4;
+  var trjstep = 0.1;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
