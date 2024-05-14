@@ -8,7 +8,7 @@
 * [НУКЛ-Sox2<sub>pos40</sub>](constructed_complexes/sox2_pos_40_shift_1.pdb) - структура нуклеосомы в комплексе с Sox2 на позиции 40 (сдвиг нуклеосомной ДНК на 1 нуклеотид)
 * [НУКЛ-Sox2<sub>pos50</sub>](constructed_complexes/sox2_pos_50_shift_1.pdb) - структура нуклеосомы в комплексе с Sox2 на позиции 50 (сдвиг нуклеосомной ДНК на 1 нуклеотид)
 
-#### Задача 4.1. 
+#### Задача 4.1. Анализ взаимодействий ПТФ с другими белками хроматина
 * [Oct4 interactors](PTF_interactors/oct4_interactors.html) - белки-партнеры Oct4 по данным STRING, BioGRID и Gene Ontology
 * [Sox2 interactors](PTF_interactors/sox2_interactors.html) - белки-партнеры Sox2 по данным STRING, BioGRID и Gene Ontology
 * [Klf4 interactors](PTF_interactors/klf4_interactors.html) - белки-партнеры Klf4 по данным STRING, BioGRID и Gene Ontology
