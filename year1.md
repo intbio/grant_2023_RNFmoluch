@@ -12,7 +12,7 @@
 * [Oct4 interactors](PTF_interactors/oct4_interactors.html) - белки-партнеры Oct4 по данным STRING, BioGRID и Gene Ontology
 * [Sox2 interactors](PTF_interactors/sox2_interactors.html) - белки-партнеры Sox2 по данным STRING, BioGRID и Gene Ontology
 * [Klf4 interactors](PTF_interactors/klf4_interactors.html) - белки-партнеры Klf4 по данным STRING, BioGRID и Gene Ontology
-* [PDB](PTF_structures/best_structures.zip) - структуры комплексов Oct4, Sox2 и Klf4 и белками-партнерами в формате PDB
+* [PDB](PTF_structures/best_structures.zip) - предсказанные с помощью AlphaFold2 Multimer структуры комплексов пионерных транскрипционных факторов (Oct4, Sox2, Klf4) с белками-партнерами. Файлы PDB для комплексов с pTM > 0.5; 18, 24 и 6 комплексов для Oct4, Sox2 и Klf4 соответственно
   
 #### В части молекулярного моделирования
 #### Задача 5.1. Траектории молекулярной динамики нуклеосом в окружении разных моделей воды 
