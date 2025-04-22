@@ -480,7 +480,7 @@
     <p style="color:#CE0000;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2B</p>
     <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">DNA</p>
     <br>
-    <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Blue</span> and <span style="color:orange;font-family:verdana;font-weight: bold">orange</span> balls mark <span style="color:steelblue;font-family:verdana;font-weight: bold">distal</span> and <span style="color:orange;font-family:verdana;font-weight: bold">proximal</span> entry/exit bais pairs.</p>
+    <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Синий</span> и <span style="color:orange;font-family:verdana;font-weight: bold">оранжевый</span> шары обозначают <span style="color:steelblue;font-family:verdana;font-weight: bold">проксимальную</span> и <span style="color:orange;font-family:verdana;font-weight: bold">дистальную</span> точки начала линкеров ДНК.</p>
     <br>
     <input class="form-check-input " type="checkbox" name="ref_str_check" value="" id="ref_str_check">
     <label class="form-check-label " for="ref_str_check">
