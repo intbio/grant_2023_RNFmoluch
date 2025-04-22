@@ -1,4 +1,4 @@
-### NUCL<sup>5</sup><sub>run 1</sub> - траектория МД нуклеосомы с линкерами ДНК длиной 5 пар нуклеотидов (PDB ID 3LZ0, полноразмерные гистоновые хвосты), повторность 1
+### NUCL<sup>30</sup><sub>run 1</sub> - траектория МД нуклеосомы с линкерами ДНК длиной 30 пар нуклеотидов (PDB ID 3LZ0, полноразмерные гистоновые хвосты), повторность 1
 [Назад](http://intbio.github.io/grant_2023_RNFmoluch/year2/)
 
 <html lang="en">
@@ -48,8 +48,8 @@
 <script src="https://unpkg.com/ngl@2.0.0-dev.35/dist/ngl.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script>
-  var pdb="linker5.pdb"
-  var xtc="linker5.xtc"
+  var pdb="linker30.pdb"
+  var xtc="linker30.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
   var trjstep = 10;
   $(document).ready(function() {
