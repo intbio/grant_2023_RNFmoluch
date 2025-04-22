@@ -96,15 +96,7 @@
         radius: 3.5
       });
       window.arg_lys_selection.setVisibility(false);
-      
-      window.dna_latch_selection = nucl.addRepresentation('hyperball', {
-        "sele": "39-49 and (:A or :E) and not _H",
-        color: residues,
-        radius: 3.5
-      });
-      window.dna_latch_selection.setVisibility(false);
-      
-      //H3 39-49 - назвать H3 39-49 DNA latch
+
 
 
       nucl.addRepresentation('cartoon', {
@@ -230,7 +222,6 @@
 
     $('input[type=checkbox][name=ref_str_check]').on('change', toggle_reference_structure);
     $('input[type=checkbox][name=arg_lys_check]').on('change', toggle_lys_arg_visibility);
-    $('input[type=checkbox][name=latch_check]').on('change', toggle_latch_visibility);
     $('input[type=checkbox][name=highlight_DA_check]').on('change', toggle_DA_highlight);
     $('input[type=checkbox][name=ortho_check]').on('change', toggle_orthographic);
     $('input[type=checkbox][name=axes_check]').on('change', toggle_axes_visibility);
@@ -299,10 +290,6 @@
     function toggle_lys_arg_visibility() {
       var state = $(this).is(":checked");
       window.arg_lys_selection.setVisibility(state);
-    }
-    function toggle_latch_visibility() {
-      var state = $(this).is(":checked");
-      window.dna_latch_selection.setVisibility(state);
     }
     
     function toggle_axes_visibility() {
@@ -516,10 +503,6 @@
       Show ARG LYS
     </label>
     
-    <input class="form-check-input " type="checkbox" name="latch_check" value="" id="latch_check">
-    <label class="form-check-label " for="latch_check">
-      Show H3 39-49 DNA latch
-    </label>
         
 
     <input class="form-check-input " type="checkbox" name="highlight_DA_check" value="" id="highlight_DA_check">
