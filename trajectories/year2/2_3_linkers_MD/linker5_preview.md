@@ -478,7 +478,7 @@
     <p style="color:#009933;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H4</p>
     <p style="color:#E0F705;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2A</p>
     <p style="color:#CE0000;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2B</p>
-    <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">DNA</p>
+    <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК</p>
     <br>
     <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Синий</span> и <span style="color:orange;font-family:verdana;font-weight: bold">оранжевый</span> шары обозначают <span style="color:steelblue;font-family:verdana;font-weight: bold">проксимальную</span> и <span style="color:orange;font-family:verdana;font-weight: bold">дистальную</span> точки начала линкеров ДНК.</p>
     <br>
