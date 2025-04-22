@@ -51,7 +51,7 @@
   var pdb="linker15.pdb"
   var xtc="linker15.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 10;
+  var trjstep = 5;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
