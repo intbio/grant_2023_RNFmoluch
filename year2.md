@@ -21,20 +21,35 @@
 
 ### Задача 3.2. Провести анализ коэволюции последовательностей гистонов и гистоновых вариантов, в том числе в части коэволюции гистонов и белков взаимодействующих с нуклеосомами. 
 * [Средние совместные вероятности мутаций остатков](year2/joint_mutation_probas.png)
-* Кладограммы организмов из выравнивания для нуклеосомы из канонических гистонов:
-    * [Средняя вероятность по всей нуклеосоме (14.78%)](year2/phylo_trees/H2A.1_H2B.2_H3_H4_14.78.svg)
-    * [50%](year2/phylo_trees/H2A.1_H2B.2_H3_H4_50.svg)
-    * [60%](year2/phylo_trees/H2A.1_H2B.2_H3_H4_60.svg)
-    * [70%](year2/phylo_trees/H2A.1_H2B.2_H3_H4_70.svg)
+* Кладограммы организмов из выравнивания для нуклеосомы из канонических гистонов с разным пороговым значением:
+    * С мутациями всех остатков:
+        * [Средняя вероятность по всей нуклеосоме (14.78%)](year2/phylo_trees/nucleosome/H2A.1_H2B.2_H3_H4_14.78.svg)
+        * [50%](year2/phylo_trees/nucleosome/H2A.1_H2B.2_H3_H4_50.svg)
+        * [60%](year2/phylo_trees/nucleosome/H2A.1_H2B.2_H3_H4_60.svg)
+        * [70%](year2/phylo_trees/nucleosome/H2A.1_H2B.2_H3_H4_70.svg)
+    * С мутациями контактирующих остатков:
+        * [Средняя вероятность по всей нуклеосоме (14.78%)](year2/phylo_trees/contacts/H2A.1_H2B.2_H3_H4_14.78.svg)
+        * [50%](year2/phylo_trees/contacts/H2A.1_H2B.2_H3_H4_50.svg)
+        * [60%](year2/phylo_trees/contacts/H2A.1_H2B.2_H3_H4_60.svg)
 * Хордовые диаграммы совместных вероятностей мутаций контактирующих остатков:
-    * [H2A.1, H2B.2, H3, H4](year2/chord_diagrams/H2A.1_H2B.2_H3_H4.html)
-    * [H2A.1, H2B.2, cenH3, H4](year2/chord_diagrams/H2A.1_H2B.2_cenH3_H4.html)
-    * [H2A.B, H2B.2, H3, H4](year2/chord_diagrams/H2A.B_H2B.2_H3_H4.html)
-    * [H2A.B, H2B.2, cenH3, H4](year2/chord_diagrams/H2A.B_H2B.2_cenH3_H4.html)
-    * [H2A.X, H2B.2, H3, H4](year2/chord_diagrams/H2A.X_H2B.2_H3_H4.html)
-    * [H2A.X, H2B.2, cenH3, H4](year2/chord_diagrams/H2A.X_H2B.2_cenH3_H4.html)
-    * [H2A.Z, H2B.2, H3, H4](year2/chord_diagrams/H2A.Z_H2B.2_H3_H4.html)
-    * [H2A.Z, H2B.2, cenH3, H4](year2/chord_diagrams/H2A.Z_H2B.2_cenH3_H4.html)
+    * С вероястностью ниже средней по всей нуклеосоме:
+        * [H2A.1, H2B.2, H3, H4](year2/low_proba_chord_diagrams/H2A.1_H2B.2_H3_H4.html)
+        * [H2A.1, H2B.2, cenH3, H4](year2/low_proba_chord_diagrams/H2A.1_H2B.2_cenH3_H4.html)
+        * [H2A.B, H2B.2, H3, H4](year2/low_proba_chord_diagrams/H2A.B_H2B.2_H3_H4.html)
+        * [H2A.B, H2B.2, cenH3, H4](year2/low_proba_chord_diagrams/H2A.B_H2B.2_cenH3_H4.html)
+        * [H2A.X, H2B.2, H3, H4](year2/low_proba_chord_diagrams/H2A.X_H2B.2_H3_H4.html)
+        * [H2A.X, H2B.2, cenH3, H4](year2/low_proba_chord_diagrams/H2A.X_H2B.2_cenH3_H4.html)
+        * [H2A.Z, H2B.2, H3, H4](year2/low_proba_chord_diagrams/H2A.Z_H2B.2_H3_H4.html)
+        * [H2A.Z, H2B.2, cenH3, H4](year2/low_proba_chord_diagrams/H2A.Z_H2B.2_cenH3_H4.html)
+    * С вероястностью выше средней по всей нуклеосоме:
+        * [H2A.1, H2B.2, H3, H4](year2/high_proba_chord_diagrams/H2A.1_H2B.2_H3_H4.html)
+        * [H2A.1, H2B.2, cenH3, H4](year2/high_proba_chord_diagrams/H2A.1_H2B.2_cenH3_H4.html)
+        * [H2A.B, H2B.2, H3, H4](year2/high_proba_chord_diagrams/H2A.B_H2B.2_H3_H4.html)
+        * [H2A.B, H2B.2, cenH3, H4](year2/high_proba_chord_diagrams/H2A.B_H2B.2_cenH3_H4.html)
+        * [H2A.X, H2B.2, H3, H4](year2/high_proba_chord_diagrams/H2A.X_H2B.2_H3_H4.html)
+        * [H2A.X, H2B.2, cenH3, H4](year2/high_proba_chord_diagrams/H2A.X_H2B.2_cenH3_H4.html)
+        * [H2A.Z, H2B.2, H3, H4](year2/high_proba_chord_diagrams/H2A.Z_H2B.2_H3_H4.html)
+        * [H2A.Z, H2B.2, cenH3, H4](year2/high_proba_chord_diagrams/H2A.Z_H2B.2_cenH3_H4.html)
 
 ### Задача 3.3. Обновить и модернизировать базу данных известных структур нуклеосом NucleosomeDB.
 
