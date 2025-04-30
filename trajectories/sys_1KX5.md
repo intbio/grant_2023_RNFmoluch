@@ -1,4 +1,4 @@
-### DNA (20 п.н.) - траектория 20 п.н. ДНК, изогнутой при помощи Plumed с RNN-NA
+### 1KX5 - траектория управляемой транслокации ДНК нуклеосомы при помощи Plumed с RBB-NA (PDB ID 1KX5)
 [Назад](http://intbio.github.io/grant_2023_RNFmoluch/)
 
 <html lang="en">
