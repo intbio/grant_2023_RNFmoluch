@@ -51,7 +51,7 @@
   var pdb="DNA_20mer.pdb"
   var xtc="DNA_20mer.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 0,005;
+  var trjstep = 0.005;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
