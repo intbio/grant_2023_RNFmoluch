@@ -51,7 +51,7 @@
   var pdb="sys_1AOI.pdb"
   var xtc="sys_1AOI.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 0,1;
+  var trjstep = 0.1;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
