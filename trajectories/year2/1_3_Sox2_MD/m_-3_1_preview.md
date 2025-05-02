@@ -51,7 +51,7 @@
   var pdb="m_-3_1.xtc.pdb"
   var xtc="m_-3_1.xtc.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 5;
+  var trjstep = 10;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
@@ -96,7 +96,15 @@
         radius: 3.5
       });
       window.arg_lys_selection.setVisibility(false);
-
+      
+      window.dna_latch_selection = nucl.addRepresentation('hyperball', {
+        "sele": "39-49 and (:A or :E) and not _H",
+        color: residues,
+        radius: 3.5
+      });
+      window.dna_latch_selection.setVisibility(false);
+      
+      //H3 39-49 - назвать H3 39-49 DNA latch
 
 
       nucl.addRepresentation('cartoon', {
@@ -143,6 +151,18 @@
         'diffuseInterior': false,
         'useInteriorColor': false
       });
+      nucl.addRepresentation('cartoon', {
+        "sele": ":L",
+        "color": 0x00FFFF,
+        "aspectRatio": aspectRatio,
+        'radiusScale': radiusScale,
+        'radiusType': 'sstruc',
+        "capped": true,
+        'subdiv': 10,
+        'diffuseInterior': false,
+        'useInteriorColor': false
+      });
+
       nucl.addRepresentation('spacefill', {
         "sele": ":I and -73 and .C1'",
         "color": "steelblue",
@@ -222,6 +242,7 @@
 
     $('input[type=checkbox][name=ref_str_check]').on('change', toggle_reference_structure);
     $('input[type=checkbox][name=arg_lys_check]').on('change', toggle_lys_arg_visibility);
+    $('input[type=checkbox][name=latch_check]').on('change', toggle_latch_visibility);
     $('input[type=checkbox][name=highlight_DA_check]').on('change', toggle_DA_highlight);
     $('input[type=checkbox][name=ortho_check]').on('change', toggle_orthographic);
     $('input[type=checkbox][name=axes_check]').on('change', toggle_axes_visibility);
@@ -290,6 +311,10 @@
     function toggle_lys_arg_visibility() {
       var state = $(this).is(":checked");
       window.arg_lys_selection.setVisibility(state);
+    }
+    function toggle_latch_visibility() {
+      var state = $(this).is(":checked");
+      window.dna_latch_selection.setVisibility(state);
     }
     
     function toggle_axes_visibility() {
@@ -478,9 +503,7 @@
     <p style="color:#009933;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H4</p>
     <p style="color:#E0F705;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2A</p>
     <p style="color:#CE0000;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2B</p>
-    <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК</p>
-    <br>
-    <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Синий</span> и <span style="color:orange;font-family:verdana;font-weight: bold">оранжевый</span> шары обозначают <span style="color:steelblue;font-family:verdana;font-weight: bold">проксимальную</span> и <span style="color:orange;font-family:verdana;font-weight: bold">дистальную</span> точки начала линкеров ДНК.</p>
+    <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">DNA</p>
     <br>
     <input class="form-check-input " type="checkbox" name="ref_str_check" value="" id="ref_str_check">
     <label class="form-check-label " for="ref_str_check">
@@ -503,6 +526,10 @@
       Show ARG LYS
     </label>
     
+    <input class="form-check-input " type="checkbox" name="latch_check" value="" id="latch_check">
+    <label class="form-check-label " for="latch_check">
+      Show H3 39-49 DNA latch
+    </label>
         
 
     <input class="form-check-input " type="checkbox" name="highlight_DA_check" value="" id="highlight_DA_check">
@@ -520,6 +547,6 @@
 
     </div>
 
+
   </body>
 </html>
-
