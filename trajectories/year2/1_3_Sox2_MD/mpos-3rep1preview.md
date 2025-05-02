@@ -109,14 +109,14 @@
 
       window.sox_wedge_selection = nucl.addRepresentation('hyperball', {
         "sele": "(45 or 48 or 49) and (:L) and not _H",
-        color: residues,
+        color: hyper_scheme,
         radius: 3.5
       });
       window.sox_wedge_selection.setVisibility(false);
       
       window.sox_tyr_110_selection = nucl.addRepresentation('hyperball', {
         "sele": "110 and (:L) and not _H",
-        color: residues,
+        color: hyper_scheme,
         radius: 3.5
       });
       window.sox_tyr_110_selection.setVisibility(false);
