@@ -100,7 +100,7 @@
       
       window.dna_latch_selection = nucl.addRepresentation('hyperball', {
         "sele": "39-49 and (:A or :E) and not _H",
-        color: residues,
+        "color": residues,
         radius: 3.5
       });
       window.dna_latch_selection.setVisibility(false);
@@ -109,8 +109,14 @@
 
 
       window.sox_site_selection = nucl.addRepresentation('cartoon', {
-        "sele": "(50-56 and (:I)) or ((-50 or -51 or -52 or -53 or -54 or -55 or -56) and (:J))",
+        "sele": "(((50-56) and (:I)) or ((-50 or -51 or -52 or -53 or -54 or -55 or -56) and (:J)) and not _H",
         color: "cyan",
+        "aspectRatio": 2,
+        'radiusScale': 4.1,
+        'radiusType': 'sstruc',
+        "aspectRatio": 2,
+        "radiusSegments": 1,
+        "capped": 0
       });
       window.sox_site_selection.setVisibility(false);
 
@@ -328,7 +334,7 @@
     }
     function toggle_sox_site_visibility() {
       var state = $(this).is(":checked");
-      window.dna_sox_site_selection.setVisibility(state);
+      window.sox_site_selection.setVisibility(state);
     }
     
     function toggle_axes_visibility() {
