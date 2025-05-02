@@ -329,7 +329,7 @@
     }
     function toggle_sox_site_visibility() {
       var state = $(this).is(":checked");
-      window.dna_sox_site_selection.setVisibility(state);
+      window.sox_site_selection.setVisibility(state);
     }
     
     function toggle_axes_visibility() {
