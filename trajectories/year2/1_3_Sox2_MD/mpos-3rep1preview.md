@@ -549,7 +549,7 @@
     <br>
     <input class="form-check-input " type="checkbox" name="sox_wedge_check" value="" id="sox_wedge_check">
     <label class="form-check-label " for="sox_wedge_check">
-      Show Sox2 hydrochobic wedge
+      Show Sox2 hydrophobic wedge
     </label>
     
     <input class="form-check-input " type="checkbox" name="sox_tyr_110_check" value="" id="sox_tyr_110_check">
