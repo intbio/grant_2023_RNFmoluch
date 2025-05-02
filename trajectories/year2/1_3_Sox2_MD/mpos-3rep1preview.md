@@ -108,7 +108,7 @@
 
 
       window.sox_wedge_selection = nucl.addRepresentation('hyperball', {
-        "sele": "45,48,49 and (:L) and not _H",
+        "sele": "(45 or 48 or 49) and (:L) and not _H",
         color: residues,
         radius: 3.5
       });
@@ -547,6 +547,16 @@
     </label>
     
     <br>
+    <input class="form-check-input " type="checkbox" name="sox_wedge_check" value="" id="sox_wedge_check">
+    <label class="form-check-label " for="sox_wedge_check">
+      Show Sox2 hydrochobic wedge
+    </label>
+    
+    <input class="form-check-input " type="checkbox" name="sox_tyr_110_check" value="" id="sox_tyr_110_check">
+    <label class="form-check-label " for="sox_tyr_110_check">
+      Show Sox2 Tyr110
+    </label>
+    
     <input class="form-check-input " type="checkbox" name="arg_lys_check" value="" id="arg_lys_check">
     <label class="form-check-label " for="arg_lys_check">
       Show ARG LYS
@@ -557,15 +567,7 @@
       Show H3 39-49 DNA latch
     </label>
     
-    <input class="form-check-input " type="checkbox" name="sox_wedge_check" value="" id="sox_wedge_check">
-    <label class="form-check-label " for="sox_wedge_check">
-      Show Sox2 hydrochobic wedge
-    </label>
     
-    <input class="form-check-input " type="checkbox" name="sox_tyr_110_check" value="" id="sox_tyr_110_check">
-    <label class="form-check-label " for="sox_tyr_110_check">
-      Show Sox2 Tyr110
-    </label>
         
 
     <input class="form-check-input " type="checkbox" name="highlight_DA_check" value="" id="highlight_DA_check">
