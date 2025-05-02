@@ -66,6 +66,7 @@
         ["orange", ".CA"],
         ["blue", "_N"],
         ["red", "_O"],
+	["yellow", "_S"],
         ["grey", "*"]
       ], "DA");
       var residues = NGL.ColormakerRegistry.addSelectionScheme([
