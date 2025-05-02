@@ -48,7 +48,7 @@
 <script src="https://unpkg.com/ngl@2.0.0-dev.35/dist/ngl.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script>
-  var pdb="f_50_1.pdb"
+  var pdb="f_50_2.pdb"
   var xtc="f_50_1.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
   var trjstep = 10;
