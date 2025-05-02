@@ -107,6 +107,22 @@
       //H3 39-49 - назвать H3 39-49 DNA latch
 
 
+      window.sox_wedge_selection = nucl.addRepresentation('hyperball', {
+        "sele": "45,48,49 and (:L) and not _H",
+        color: residues,
+        radius: 3.5
+      });
+      window.sox_wedge_selection.setVisibility(false);
+      
+      window.sox_tyr_110_selection = nucl.addRepresentation('hyperball', {
+        "sele": "110 and (:L) and not _H",
+        color: residues,
+        radius: 3.5
+      });
+      window.sox_tyr_110_selection.setVisibility(false);
+
+      
+
       nucl.addRepresentation('cartoon', {
         "sele": ":A :E",
         "color": 0x020AED,
@@ -243,6 +259,8 @@
     $('input[type=checkbox][name=ref_str_check]').on('change', toggle_reference_structure);
     $('input[type=checkbox][name=arg_lys_check]').on('change', toggle_lys_arg_visibility);
     $('input[type=checkbox][name=latch_check]').on('change', toggle_latch_visibility);
+    $('input[type=checkbox][name=sox_wedge_check]').on('change', toggle_sox_wedge_visibility);
+    $('input[type=checkbox][name=sox_tyr_110_check]').on('change', toggle_sox_tyr_110_visibility);
     $('input[type=checkbox][name=highlight_DA_check]').on('change', toggle_DA_highlight);
     $('input[type=checkbox][name=ortho_check]').on('change', toggle_orthographic);
     $('input[type=checkbox][name=axes_check]').on('change', toggle_axes_visibility);
@@ -315,6 +333,14 @@
     function toggle_latch_visibility() {
       var state = $(this).is(":checked");
       window.dna_latch_selection.setVisibility(state);
+    }
+    function toggle_sox_wedge_visibility() {
+      var state = $(this).is(":checked");
+      window.sox_wedge_selection.setVisibility(state);
+    }
+    function toggle_sox_tyr_110_visibility() {
+      var state = $(this).is(":checked");
+      window.sox_tyr_110_selection.setVisibility(state);
     }
     
     function toggle_axes_visibility() {
@@ -529,6 +555,16 @@
     <input class="form-check-input " type="checkbox" name="latch_check" value="" id="latch_check">
     <label class="form-check-label " for="latch_check">
       Show H3 39-49 DNA latch
+    </label>
+    
+    <input class="form-check-input " type="checkbox" name="sox_wedge_check" value="" id="sox_wedge_check">
+    <label class="form-check-label " for="sox_wedge_check">
+      Show Sox2 hydrochobic wedge
+    </label>
+    
+    <input class="form-check-input " type="checkbox" name="sox_tyr_110_check" value="" id="sox_tyr_110_check">
+    <label class="form-check-label " for="sox_tyr_110_check">
+      Show Sox2 Tyr110
     </label>
         
 
