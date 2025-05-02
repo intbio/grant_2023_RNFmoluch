@@ -100,7 +100,7 @@
       
       window.dna_latch_selection = nucl.addRepresentation('hyperball', {
         "sele": "39-49 and (:A or :E) and not _H",
-        color: residues,
+        "color": residues,
         radius: 3.5
       });
       window.dna_latch_selection.setVisibility(false);
@@ -109,7 +109,7 @@
 
 
       window.sox_site_selection = nucl.addRepresentation('hyperball', {
-        "sele": "((50 or 51 or 52 or 53 or 54 or 55 or 56 and (:I)) or ((-50 or -51 or -52 or -53 or -54 or -55 or -56) and (:J))) and not _H",
+        "sele": "((50 or 51 or 52 or 53 or 54 or 55 or 56) and (:I)) and not _H",
         color: "cyan",
         radius: 3.5
       });
