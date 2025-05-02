@@ -111,6 +111,11 @@
       window.sox_site_selection = nucl.addRepresentation('cartoon', {
         "sele": "(50-56 and (:I)) or ((-50 or -51 or -52 or -53 or -54 or -55 or -56) and (:J))",
         color: "cyan",
+	"aspectRatio": 2,
+        'radiusScale': 4.1,
+        'radiusType': 'sstruc',
+        "aspectRatio": 2,
+        "radiusSegments": 1,
       });
       window.sox_site_selection.setVisibility(false);
 
