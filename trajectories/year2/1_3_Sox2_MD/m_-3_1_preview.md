@@ -1,5 +1,5 @@
 ### m_-3_1 - траектория МД нуклеосомы в комплексе с SOX2 на позиции -3, повторность 1
-[Назад](http://intbio.github.io/grant_2023_RNFmoluch/year2/)
+[Назад](http://intbio.github.io/grant_2023_RNFmoluch/year2.html)
 
 <html lang="en">
   <head>
@@ -48,8 +48,8 @@
 <script src="https://unpkg.com/ngl@2.0.0-dev.35/dist/ngl.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script>
-  var pdb="m_-3_1.xtc.pdb"
-  var xtc="m_-3_1.xtc.xtc"
+  var pdb="m_-3_1.pdb"
+  var xtc="m_-3_1.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
   var trjstep = 10;
   $(document).ready(function() {
