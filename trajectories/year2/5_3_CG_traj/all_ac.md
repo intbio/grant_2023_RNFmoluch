@@ -91,19 +91,17 @@ j### Траектория огрубленной фибриллы с ацети�
 
       nucl.addRepresentation("spacefill", {
         sele: ":P",
-        colorScheme: "charge",
+        colorScheme: "partialcharge",
 	colorScale: "red-white-blue",
-        radiusScale: 10,
 	colorDomain: [-6,6],
-        radiusType: "pqr"
+        radiusType: "explicit"
       });
       nucl.addRepresentation("spacefill", {
         sele: ":D",
-        colorScheme: "charge",
+        colorScheme: "partialcharge",
 	colorScale: "red-white-blue",
-        radiusScale: 10,
 	colorDomain: [-6,6],
-        radiusType: "pqr"
+        radiusType: "explicit"
       });
 
       NGL.autoLoad(xtc).then(function(frames) {
