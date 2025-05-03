@@ -118,6 +118,17 @@
         'diffuseInterior': false,
         'useInteriorColor': false
       });
+      nucl.addRepresentation('spacefill', {
+        "sele": ":D",
+        "color": 0xE0F705,
+        "aspectRatio": aspectRatio,
+        'radiusScale': 10,
+        'radiusType': 'sstruc',
+        "capped": true,
+        'subdiv': 10,
+        'diffuseInterior': false,
+        'useInteriorColor': false
+      });
       window.nucl_cartoon = nucl.addRepresentation('spacefill', {
         "sele": ":D :P",
         "color": 'grey',
