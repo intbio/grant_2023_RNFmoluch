@@ -92,8 +92,7 @@ j### Траектория огрубленной фибриллы с ацети�
       nucl.addRepresentation('spacefill', {
         "sele": ":P",
         "color": 0xE0F705,
-        "aspectRatio": aspectRatio,
-        'radiusScale': 1,
+        'radiusScale': 10,
         'radiusType': 'pqr',
         "capped": true,
         'subdiv': 10,
@@ -103,8 +102,7 @@ j### Траектория огрубленной фибриллы с ацети�
       nucl.addRepresentation('spacefill', {
         "sele": ":D",
         "color": 0xCE0000,
-        "aspectRatio": aspectRatio,
-        'radiusScale': 1,
+        'radiusScale': 10,
         'radiusType': 'pqr',
         "capped": true,
         'subdiv': 10,
