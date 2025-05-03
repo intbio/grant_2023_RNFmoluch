@@ -90,14 +90,16 @@ j### Траектория огрубленной фибриллы с ацети�
 
 
       nucl.addRepresentation('spacefill', {
-        "sele": ":P",
-        "color": 0xE0F705,
-        'radiusScale': 10,
-        'radiusType': 'pqr',
-        "capped": true,
-        'subdiv': 10,
-        'diffuseInterior': false,
-        'useInteriorColor': false
+        sele: ":P",
+        colorScheme: 'charge',
+	colorScale: 'red-white-blue',
+        radiusScale: 10,
+	colorDomain: [-6,6],
+        radiusType: 'pqr',
+        capped: true,
+        subdiv: 10,
+        diffuseInterior: false,
+        useInteriorColor: false
       });
       nucl.addRepresentation('spacefill', {
         "sele": ":D",
