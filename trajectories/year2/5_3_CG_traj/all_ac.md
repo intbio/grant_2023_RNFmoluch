@@ -107,33 +107,12 @@
       //H3 39-49 - назвать H3 39-49 DNA latch
 
 
-      nucl.addRepresentation('spacefill', {
-        "sele": ":A :E",
-        "color": 0x020AED,
-        "aspectRatio": aspectRatio,
-        'radiusScale': radiusScale,
-        'radiusType': 'sstruc',
-        "capped": true,
-        'subdiv': 10,
-        'diffuseInterior': false,
-        'useInteriorColor': false
       });
       nucl.addRepresentation('spacefill', {
-        "sele": ":B :F",
-        "color": "green",
-        "aspectRatio": aspectRatio,
-        'radiusScale': radiusScale,
-        'radiusType': 'sstruc',
-        "capped": true,
-        'subdiv': 10,
-        'diffuseInterior': false,
-        'useInteriorColor': false
-      });
-      nucl.addRepresentation('spacefill', {
-        "sele": ":C :G",
+        "sele": ":P",
         "color": 0xE0F705,
         "aspectRatio": aspectRatio,
-        'radiusScale': radiusScale,
+        'radiusScale': 10,
         'radiusType': 'sstruc',
         "capped": true,
         'subdiv': 10,
@@ -141,10 +120,10 @@
         'useInteriorColor': false
       });
       nucl.addRepresentation('spacefill', {
-        "sele": ":D :H",
+        "sele": ":D",
         "color": 0xCE0000,
         "aspectRatio": aspectRatio,
-        'radiusScale': radiusScale,
+        'radiusScale': 10,
         'radiusType': 'sstruc',
         "capped": true,
         'subdiv': 10,
@@ -160,7 +139,7 @@
         "capped": 0
       });
       window.nucl_base = nucl.addRepresentation('base', {
-        "sele": "nucleic",
+        "sele": ":D",
         "color": 'grey'
       });
 
