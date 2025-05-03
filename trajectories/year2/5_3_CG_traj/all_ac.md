@@ -88,26 +88,7 @@
       stage.animationControls.rotate([ 0, 1, 0, 0 ],0);
 	  stage.setParameters({cameraType: "orthographic"});
 
-      
 
-      window.arg_lys_selection = nucl.addRepresentation('hyperball', {
-        "sele": "(ARG or LYS) and not _H",
-        color: hyper_scheme,
-        radius: 3.5
-      });
-      window.arg_lys_selection.setVisibility(false);
-      
-      window.dna_latch_selection = nucl.addRepresentation('hyperball', {
-        "sele": "39-49 and (:A or :E) and not _H",
-        color: residues,
-        radius: 3.5
-      });
-      window.dna_latch_selection.setVisibility(false);
-      
-      //H3 39-49 - назвать H3 39-49 DNA latch
-
-
-      });
       nucl.addRepresentation('spacefill', {
         "sele": ":P",
         "color": 0xE0F705,
@@ -137,10 +118,6 @@
         "radius": radius,
         "radiusSegments": 1,
         "capped": 0
-      });
-      window.nucl_base = nucl.addRepresentation('base', {
-        "sele": ":D",
-        "color": 'grey'
       });
 
       NGL.autoLoad(xtc).then(function(frames) {
