@@ -51,7 +51,7 @@
   var pdb="CG_fiber_all_ac.pqr"
   var xtc="CG_fiber_all_ac.xtc"
   var csvfile="dat/1kx5_sym_dist_unwrap.csv"
-  var trjstep = 0.005;
+  var trjstep = 4000;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
@@ -148,14 +148,6 @@
       //  .attr('y1', 0)
       //  .attr('y2', height);
     }
-
-
-    $('input[type=checkbox][name=ref_str_check]').on('change', toggle_reference_structure);
-    $('input[type=checkbox][name=arg_lys_check]').on('change', toggle_lys_arg_visibility);
-    $('input[type=checkbox][name=latch_check]').on('change', toggle_latch_visibility);
-    $('input[type=checkbox][name=highlight_DA_check]').on('change', toggle_DA_highlight);
-    $('input[type=checkbox][name=ortho_check]').on('change', toggle_orthographic);
-    $('input[type=checkbox][name=axes_check]').on('change', toggle_axes_visibility);
     
 
 
@@ -188,58 +180,7 @@
       })
     }
 
-    function toggle_reference_structure() {
-      var state = $(this).is(":checked");
-      if (typeof window.ref_str_repr_prot == "undefined") {
-        load_reference_structure();
 
-      } else {
-        window.ref_str_repr_prot.setVisibility(state);
-        window.ref_str_repr_nucl.setVisibility(state);
-        window.ref_str_repr_base.setVisibility(state)
-      }
-
-
-    }
-
-    function toggle_DA_highlight() {
-      var state = $(this).is(":checked");
-      if (state === false) {
-        window.nucl_cartoon.setColor('grey')
-        window.nucl_base.setColor('grey')
-      } else {
-        var scheme = NGL.ColormakerRegistry.addSelectionScheme([
-          ["pink", "DA"],
-          ["grey", "*"]
-        ], "DA");
-        window.nucl_cartoon.setColor(scheme)
-        window.nucl_base.setColor(scheme)
-
-      }
-    }
-
-    function toggle_lys_arg_visibility() {
-      var state = $(this).is(":checked");
-      window.arg_lys_selection.setVisibility(state);
-    }
-    function toggle_latch_visibility() {
-      var state = $(this).is(":checked");
-      window.dna_latch_selection.setVisibility(state);
-    }
-    
-    function toggle_axes_visibility() {
-      var state = $(this).is(":checked");
-      window.axes.setVisibility(state);
-    }
-    
-    function toggle_orthographic() {
-      var state = $(this).is(":checked");
-      if ($(this).is(":checked")){
-      	window.stage.setParameters({cameraType: "orthographic"})
-        } else {
-        window.stage.setParameters({cameraType: "perspective"})
-        }
-    }
 
     var margin = {
         top: 10,
@@ -409,43 +350,7 @@
 
 </script>
     <br>
-    <p style="color:#020AED;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H3</p>
-    <p style="color:#009933;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H4</p>
-    <p style="color:#E0F705;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2A</p>
-    <p style="color:#CE0000;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2B</p>
-    <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">DNA</p>
-    <br>
-    <input class="form-check-input " type="checkbox" name="ref_str_check" value="" id="ref_str_check">
-    <label class="form-check-label " for="ref_str_check">
-      Show starting state
-    </label>
-    
-    <input class="form-check-input " type="checkbox" name="ortho_check" value="" id="ortho_check" checked="true">
-    <label class="form-check-label " for="ortho_check">
-      Orthographic
-    </label>
-    
-    <input class="form-check-input " type="checkbox" name="axes_check" value="" id="axes_check">
-    <label class="form-check-label " for="ortho_check">
-      Show axes
-    </label>
-    
-    <br>
-    <input class="form-check-input " type="checkbox" name="arg_lys_check" value="" id="arg_lys_check">
-    <label class="form-check-label " for="arg_lys_check">
-      Show ARG LYS
-    </label>
-    
-    <input class="form-check-input " type="checkbox" name="latch_check" value="" id="latch_check">
-    <label class="form-check-label " for="latch_check">
-      Show H3 39-49 DNA latch
-    </label>
-        
 
-    <input class="form-check-input " type="checkbox" name="highlight_DA_check" value="" id="highlight_DA_check">
-    <label class="form-check-label " for="highlight_DA_check">
-      Highlight ADE
-    </label>
 
 
     <div id="viewport0" style="height:500px; border: thin solid black"></div>
