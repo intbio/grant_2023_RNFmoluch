@@ -89,27 +89,21 @@ j### Траектория огрубленной фибриллы с ацети�
 	  stage.setParameters({cameraType: "orthographic"});
 
 
-      nucl.addRepresentation('spacefill', {
+      nucl.addRepresentation("spacefill", {
         sele: ":P",
-        colorScheme: 'charge',
-	colorScale: 'red-white-blue',
+        colorScheme: "charge",
+	colorScale: "red-white-blue",
         radiusScale: 10,
 	colorDomain: [-6,6],
-        radiusType: 'pqr',
-        capped: true,
-        subdiv: 10,
-        diffuseInterior: false,
-        useInteriorColor: false
+        radiusType: "pqr"
       });
-      nucl.addRepresentation('spacefill', {
-        "sele": ":D",
-        "color": 0xCE0000,
-        'radiusScale': 10,
-        'radiusType': 'pqr',
-        "capped": true,
-        'subdiv': 10,
-        'diffuseInterior': false,
-        'useInteriorColor': false
+      nucl.addRepresentation("spacefill", {
+        sele: ":D",
+        colorScheme: "charge",
+	colorScale: "red-white-blue",
+        radiusScale: 10,
+	colorDomain: [-6,6],
+        radiusType: "pqr"
       });
 
       NGL.autoLoad(xtc).then(function(frames) {
