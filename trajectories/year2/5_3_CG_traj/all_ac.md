@@ -115,7 +115,6 @@
         "sele": ":D",
         "color": 'grey',
         "aspectRatio": aspectRatio,
-        "radius": radius,
         "radiusSegments": 1,
         "capped": 0
       });
