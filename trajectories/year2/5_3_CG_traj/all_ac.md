@@ -92,15 +92,11 @@
       nucl.addRepresentation("spacefill", {
         sele: ":P",
         colorScheme: "partialСharge",
-	colorScale: "red-white-blue",
-	colorDomain: [-6,6],
         radiusType: "explicit"
       });
       nucl.addRepresentation("spacefill", {
         sele: ":D",
         colorScheme: "partialСharge",
-	colorScale: "red-white-blue",
-	colorDomain: [-6,6],
         radiusType: "explicit"
       });
 
