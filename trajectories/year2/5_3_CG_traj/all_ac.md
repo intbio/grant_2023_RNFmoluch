@@ -90,12 +90,30 @@
 
       
 
+      window.arg_lys_selection = nucl.addRepresentation('hyperball', {
+        "sele": "(ARG or LYS) and not _H",
+        color: hyper_scheme,
+        radius: 3.5
+      });
+      window.arg_lys_selection.setVisibility(false);
+      
+      window.dna_latch_selection = nucl.addRepresentation('hyperball', {
+        "sele": "39-49 and (:A or :E) and not _H",
+        color: residues,
+        radius: 3.5
+      });
+      window.dna_latch_selection.setVisibility(false);
+      
+      //H3 39-49 - назвать H3 39-49 DNA latch
+
+
+      });
       nucl.addRepresentation('spacefill', {
         "sele": ":P",
         "color": 0xE0F705,
         "aspectRatio": aspectRatio,
-        'radiusScale': 10,
-        'radiusType': 'sstruc',
+        'radiusScale': 1,
+        'radiusType': 'data',
         "capped": true,
         'subdiv': 10,
         'diffuseInterior': false,
@@ -105,8 +123,8 @@
         "sele": ":D",
         "color": 0xCE0000,
         "aspectRatio": aspectRatio,
-        'radiusScale': 10,
-        'radiusType': 'sstruc',
+        'radiusScale': 1,
+        'radiusType': 'data',
         "capped": true,
         'subdiv': 10,
         'diffuseInterior': false,
