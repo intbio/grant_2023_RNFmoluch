@@ -107,6 +107,7 @@
       //H3 39-49 - назвать H3 39-49 DNA latch
 
 
+      });
       nucl.addRepresentation('spacefill', {
         "sele": ":P",
         "color": 0xE0F705,
@@ -120,7 +121,7 @@
       });
       nucl.addRepresentation('spacefill', {
         "sele": ":D",
-        "color": 0xE0F705,
+        "color": 0xCE0000,
         "aspectRatio": aspectRatio,
         'radiusScale': 10,
         'radiusType': 'sstruc',
@@ -130,7 +131,7 @@
         'useInteriorColor': false
       });
       window.nucl_cartoon = nucl.addRepresentation('spacefill', {
-        "sele": ":D :P",
+        "sele": ":D",
         "color": 'grey',
         "aspectRatio": aspectRatio,
         "radius": radius,
