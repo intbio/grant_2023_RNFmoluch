@@ -152,7 +152,7 @@
         'useInteriorColor': false
       });
       window.nucl_cartoon = nucl.addRepresentation('spacefill', {
-        "sele": "nucleic",
+        "sele": ":D",
         "color": 'grey',
         "aspectRatio": aspectRatio,
         "radius": radius,
