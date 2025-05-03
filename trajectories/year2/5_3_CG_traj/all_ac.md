@@ -92,7 +92,6 @@
       nucl.addRepresentation('spacefill', {
         "sele": ":P",
         "color": 0xE0F705,
-        "aspectRatio": aspectRatio,
         'radiusScale': 1,
         'radiusType': 'pqr',
         "capped": true,
@@ -103,7 +102,6 @@
       nucl.addRepresentation('spacefill', {
         "sele": ":D",
         "color": 0xCE0000,
-        "aspectRatio": aspectRatio,
         'radiusScale': 1,
         'radiusType': 'pqr',
         "capped": true,
@@ -115,7 +113,6 @@
         "sele": ":D",
         "color": 'grey',
         "aspectRatio": aspectRatio,
-        "radius": radius,
         "radiusSegments": 1,
         "capped": 0
       });
