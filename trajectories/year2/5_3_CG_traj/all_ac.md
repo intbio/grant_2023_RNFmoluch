@@ -1,4 +1,4 @@
-j### Траектория огрубленной фибриллы с ацетилированием гистоновых хвостов.
+### Траектория огрубленной фибриллы с ацетилированием гистоновых хвостов.
 [Назад](http://intbio.github.io/grant_2023_RNFmoluch/)
 
 <html lang="en">
@@ -91,14 +91,14 @@ j### Траектория огрубленной фибриллы с ацети�
 
       nucl.addRepresentation("spacefill", {
         sele: ":P",
-        colorScheme: "partialcharge",
+        colorScheme: "partialСharge",
 	colorScale: "red-white-blue",
 	colorDomain: [-6,6],
         radiusType: "explicit"
       });
       nucl.addRepresentation("spacefill", {
         sele: ":D",
-        colorScheme: "partialcharge",
+        colorScheme: "partialСharge",
 	colorScale: "red-white-blue",
 	colorDomain: [-6,6],
         radiusType: "explicit"
