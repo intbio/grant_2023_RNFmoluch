@@ -22,22 +22,7 @@
       }
     </style>
   </head>
-
-    <body>
-    <div class="container-lg px-3 my-5 markdown-body">
-      
-      <h1 style="text-align: center;"><a href="http://intbio.org/grant_2023_RNFmoluch/">grant_2023_RNFmoluch</a></h1>
-      
-
-      <h3 id="траектории-птм-в-составе-трипептидов" style="text-align: center;">Траектории ПТМ в составе трипептидов</h3>
-      <p style="text-align: center;"><a href="http://intbio.github.io/grant_2023_RNFmoluch/">Назад</a></p>
-
-      <html lang="en">
-      <head>
-        <meta charset="utf-8" />
-        <script src="https://unpkg.com/ngl@2.0.0-dev.35/dist/ngl.js"></script>
-      </head>
-      <body>
+  
         <script>
           document.addEventListener("DOMContentLoaded", function() {
             // Define all trajectories
@@ -59,7 +44,6 @@
               // Create container for each trajectory
               const container = document.createElement('div');
               container.className = 'trajectory-container';
-              
               // Add color legend
               const legend = document.createElement('div');
               legend.className = 'color-legend';
