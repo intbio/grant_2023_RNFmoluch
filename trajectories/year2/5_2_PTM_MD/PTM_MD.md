@@ -22,7 +22,14 @@
       }
     </style>
   </head>
-  
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      <html lang="en">
+      <head>
+        <meta charset="utf-8" />
+        <script src="https://unpkg.com/ngl@2.0.0-dev.35/dist/ngl.js"></script>
+      </head>
+      <body>
         <script>
           document.addEventListener("DOMContentLoaded", function() {
             // Define all trajectories
