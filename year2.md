@@ -96,8 +96,13 @@
 ### Задача 3.3. Обновить и модернизировать базу данных известных структур нуклеосом NucleosomeDB.
 
 ### Задача 4.1.Построить возможные модели комплексов ПТФ (трансактивационных доменов) и других известных ядерных белков человека. Охарактеризовать ключевые участки ПТФ, отвечающие за связывание с белками хроматина.
-
-### Задача 4.2 Провести количественный и качественный сравнительный анализ ядерного протеома в дифференцированных тканях и индуцированных плюрипотентных стволовых клетках. Определить изменения в белковом составе при клеточной дедифференцировке.
+For complexes, if at least one metric fulfils the condition (pDockQ > 0.5, ipSAE > 0.5, ipTM > 0.8), predicted structures and their interactive browsing are available.
+- [Oct4 interactions](https://github.com/intbio/Khasanova_et_al_2025/OCT4_interactors.md)
+  - [Oct4 disorder-to-order transition](https://github.com/intbio/Khasanova_et_al_2025/OCT4_dtot.md)
+- [Klf4 interactions](https://github.com/intbio/Khasanova_et_al_2025/KLF4_interactors.md)
+  - [Klf4 disorder-to-order transition](https://github.com/intbio/Khasanova_et_al_2025/KLF4_dtot.md)
+- [Sox2 interactions](https://github.com/intbio/Khasanova_et_al_2025/SOX2_interactors.md)
+  - [Sox2 disorder-to-order transition](https://github.com/intbio/Khasanova_et_al_2025/SOX2_dtot.md)
 
 ### Задача 5.2 Разработать программные конвейеры для создания наборов параметров для моделирования пост-трансляционных модификаций гистонов и других нестандартных аминокислотных остатков для расчетов методом молекулярной динамики. Создать библиотеку параметров для наиболее часто встречающихся ПТМ и модификаций нуклеотидов.
 * [PTM_MD](trajectories/year2/5_2_PTM_MD/PTM_MD.md) - Траектории ПТМ в составе трипептидов
