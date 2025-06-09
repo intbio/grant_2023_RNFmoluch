@@ -105,13 +105,6 @@ For complexes, if at least one metric fulfils the condition (pDockQ > 0.5, ipSAE
   - [**Structural models with observed contact to Klf4 residue 443**](https://intbio.org/Khasanova_et_al_2025/KLF4_443.html) 
 - [**Sox2 interactions**](https://intbio.org/Khasanova_et_al_2025/SOX2_interactors.html) 
   - [**Sox2 disorder-to-order transition**](https://intbio.org/Khasanova_et_al_2025/SOX2_dtot.html) 
-  
-- [Oct4 interactions](https://intbio.org/Khasanova_et_al_2025/OCT4_interactors.html) 
-  - [Oct4 disorder-to-order transition](https://intbio.org/Khasanova_et_al_2025/OCT4_dtot.html)
-- [Klf4 interactions](https://intbio.org/Khasanova_et_al_2025/KLF4_interactors.html)
-  - [Klf4 disorder-to-order transition](https://intbio.org/Khasanova_et_al_2025/KLF4_dtot.html)
-- [Sox2 interactions](https://intbio.org/Khasanova_et_al_2025/SOX2_interactors.html) 
-  - [Sox2 disorder-to-order transition](https://intbio.org/Khasanova_et_al_2025/SOX2_dtot.html)
 
 ### Задача 5.2 Разработать программные конвейеры для создания наборов параметров для моделирования пост-трансляционных модификаций гистонов и других нестандартных аминокислотных остатков для расчетов методом молекулярной динамики. Создать библиотеку параметров для наиболее часто встречающихся ПТМ и модификаций нуклеотидов.
 * [PTM_MD](trajectories/year2/5_2_PTM_MD/PTM_MD.md) - Траектории ПТМ в составе трипептидов
