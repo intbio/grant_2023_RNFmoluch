@@ -97,6 +97,15 @@
 
 ### Задача 4.1.Построить возможные модели комплексов ПТФ (трансактивационных доменов) и других известных ядерных белков человека. Охарактеризовать ключевые участки ПТФ, отвечающие за связывание с белками хроматина.
 For complexes, if at least one metric fulfils the condition (pDockQ > 0.5, ipSAE > 0.5, ipTM > 0.8), predicted structures and their interactive browsing are available.
+- [**Oct4 interactions**](https://intbio.org/Khasanova_et_al_2025/OCT4_interactors.html) 
+  - [**Oct4 disorder-to-order transition**](https://intbio.org/Khasanova_et_al_2025/OCT4_dtot.html) 
+- [**Klf4 interactions**](https://intbio.org/Khasanova_et_al_2025/KLF4_interactors.html) 
+  - [**Klf4 disorder-to-order transition**](https://intbio.org/Khasanova_et_al_2025/KLF4_dtot.html) 
+  - [**443Q/N mutation analysis (FoldX raw output)**](https://intbio.org/Khasanova_et_al_2025/structures/klf4_mutations.zip)
+  - [**Structural models with observed contact to Klf4 residue 443**](https://intbio.org/Khasanova_et_al_2025/KLF4_443.html) 
+- [**Sox2 interactions**](https://intbio.org/Khasanova_et_al_2025/SOX2_interactors.html) 
+  - [**Sox2 disorder-to-order transition**](https://intbio.org/Khasanova_et_al_2025/SOX2_dtot.html) 
+  
 - [Oct4 interactions](https://intbio.org/Khasanova_et_al_2025/OCT4_interactors.html) 
   - [Oct4 disorder-to-order transition](https://intbio.org/Khasanova_et_al_2025/OCT4_dtot.html)
 - [Klf4 interactions](https://intbio.org/Khasanova_et_al_2025/KLF4_interactors.html)
