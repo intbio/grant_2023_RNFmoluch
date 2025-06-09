@@ -97,14 +97,14 @@
 
 ### Задача 4.1.Построить возможные модели комплексов ПТФ (трансактивационных доменов) и других известных ядерных белков человека. Охарактеризовать ключевые участки ПТФ, отвечающие за связывание с белками хроматина.
 For complexes, if at least one metric fulfils the condition (pDockQ > 0.5, ipSAE > 0.5, ipTM > 0.8), predicted structures and their interactive browsing are available.
-- [**Oct4 interactions**](https://intbio.org/Khasanova_et_al_2025/OCT4_interactors.html) 
-  - [**Oct4 disorder-to-order transition**](https://intbio.org/Khasanova_et_al_2025/OCT4_dtot.html) 
-- [**Klf4 interactions**](https://intbio.org/Khasanova_et_al_2025/KLF4_interactors.html) 
-  - [**Klf4 disorder-to-order transition**](https://intbio.org/Khasanova_et_al_2025/KLF4_dtot.html) 
-  - [**443Q/N mutation analysis (FoldX raw output)**](https://intbio.org/Khasanova_et_al_2025/structures/klf4_mutations.zip)
-  - [**Structural models with observed contact to Klf4 residue 443**](https://intbio.org/Khasanova_et_al_2025/KLF4_443.html) 
-- [**Sox2 interactions**](https://intbio.org/Khasanova_et_al_2025/SOX2_interactors.html) 
-  - [**Sox2 disorder-to-order transition**](https://intbio.org/Khasanova_et_al_2025/SOX2_dtot.html) 
+- [Структуры комплексов Oct4](https://intbio.org/Khasanova_et_al_2025/OCT4_interactors.html) 
+  - [Конформационный переход из неупорядоченного в упорядоченное состояние в Oct4](https://intbio.org/Khasanova_et_al_2025/OCT4_dtot.html) 
+- [Структуры комплексов Klf4](https://intbio.org/Khasanova_et_al_2025/KLF4_interactors.html) 
+  - [Конформационный переход из неупорядоченного в упорядоченное состояние в Klf4](https://intbio.org/Khasanova_et_al_2025/KLF4_dtot.html) 
+  - [Анализ мутации 443Q/N (409Q/N), выход программы FoldX](https://intbio.org/Khasanova_et_al_2025/structures/klf4_mutations.zip)
+  - [Структуры комплексов Klf4, имеющие контакт с остатком 443 (409)](https://intbio.org/Khasanova_et_al_2025/KLF4_443.html) 
+- [Структуры комплексов Sox2](https://intbio.org/Khasanova_et_al_2025/SOX2_interactors.html) 
+  - [Конформационный переход из неупорядоченного в упорядоченное состояние в Sox2](https://intbio.org/Khasanova_et_al_2025/SOX2_dtot.html) 
 
 ### Задача 5.2 Разработать программные конвейеры для создания наборов параметров для моделирования пост-трансляционных модификаций гистонов и других нестандартных аминокислотных остатков для расчетов методом молекулярной динамики. Создать библиотеку параметров для наиболее часто встречающихся ПТМ и модификаций нуклеотидов.
 * [PTM_MD](trajectories/year2/5_2_PTM_MD/PTM_MD.md) - Траектории ПТМ в составе трипептидов
