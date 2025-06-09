@@ -96,7 +96,7 @@
 ### Задача 3.3. Обновить и модернизировать базу данных известных структур нуклеосом NucleosomeDB.
 
 ### Задача 4.1.Построить возможные модели комплексов ПТФ (трансактивационных доменов) и других известных ядерных белков человека. Охарактеризовать ключевые участки ПТФ, отвечающие за связывание с белками хроматина.
-For complexes, if at least one metric fulfils the condition (pDockQ > 0.5, ipSAE > 0.5, ipTM > 0.8), predicted structures and their interactive browsing are available.
+Предсказанные структуры комплексов доступны для интерактивного просмотра, если их качествство удовлетворяет хотя бы одному порогу по метрикам (pDockQ > 0.5, ipSAE > 0.5, ipTM > 0.8)
 - [Структуры комплексов Oct4](https://intbio.org/Khasanova_et_al_2025/OCT4_interactors.html) 
   - [Конформационный переход из неупорядоченного в упорядоченное состояние в Oct4](https://intbio.org/Khasanova_et_al_2025/OCT4_dtot.html) 
 - [Структуры комплексов Klf4](https://intbio.org/Khasanova_et_al_2025/KLF4_interactors.html) 
