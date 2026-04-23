@@ -362,7 +362,7 @@
 	<p style="color:#FF00FF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК, смещаемый фрагмент</p><br> 
 	<p style="color:#00FFFF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК, фрагмент для выравнивания</p>
     <br>
-    <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Синисй</span> и <span style="color:orange;font-family:verdana;font-weight: bold">оранжевый</span> шары обозначают <span style="color:steelblue;font-family:verdana;font-weight: bold">проксимальный</span> и <span style="color:orange;font-family:verdana;font-weight: bold">дистальный</span> концы ДНК</p>
+    <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Синий</span> и <span style="color:orange;font-family:verdana;font-weight: bold">оранжевый</span> шары обозначают <span style="color:steelblue;font-family:verdana;font-weight: bold">проксимальный</span> и <span style="color:orange;font-family:verdana;font-weight: bold">дистальный</span> концы ДНК</p>
     <input class="form-check-input " type="checkbox" name="ref_str_check" value="" id="ref_str_check">
     <label class="form-check-label " for="ref_str_check">
       Show starting state
