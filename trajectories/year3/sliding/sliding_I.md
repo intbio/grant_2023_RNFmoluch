@@ -172,7 +172,7 @@
         'useInteriorColor': false
       });
       window.nucl_cartoon_J = nucl.addRepresentation('cartoon', {
-        "sele": ":J",
+        "sele": "nucleic",
         "color": 'grey',
         "aspectRatio": aspectRatio,
         "radius": radius,
@@ -180,11 +180,11 @@
         "capped": 0
       });
       window.nucl_cartoon_I = nucl.addRepresentation('cartoon', {
-        "sele": ":I",
+        "sele": ":I and -60-18",
         "color": 'cyan',
         "aspectRatio": aspectRatio,
         "radius": radius,
-        "radiusSegments": 1,
+        "radiusSegments": 1.1,
         "capped": 0
       });
 	  window.nucl_cartoon_mov = nucl.addRepresentation('cartoon', {
@@ -408,7 +408,7 @@
       <img src="relative_twist_sliding_I.png" alt="reltwist" style="width:100%">
     </figure>
         <figure>
-      <img src="angles_sliding_I.png" alt="angles" style="width:90%">
+      <img src="angles_sliding_I.png" alt="angles" style="width:88%">
     </figure>
   </body>
 </html>
