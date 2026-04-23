@@ -405,7 +405,7 @@
 
     </div>
     <figure>
-      <img src="relative_twist_sliding_both_sides_run1.png" alt="reltwist" style="width:100%">
+      <img src="relative_twist_sliding_both_sides_run3.png" alt="reltwist" style="width:100%">
     </figure>
         <figure>
       <img src="angles_sliding_both_sides_run3.png" alt="angles" style="width:88%">
