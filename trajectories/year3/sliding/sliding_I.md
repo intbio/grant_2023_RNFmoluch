@@ -408,7 +408,7 @@
       <img src="relative_twist_sliding_I.png" alt="reltwist" style="width:100%">
     </figure>
         <figure>
-      <img src="angles_sliding_I.png" alt="angles" style="width:80%">
+      <img src="angles_sliding_I.png" alt="angles" style="width:90%">
     </figure>
   </body>
 </html>
