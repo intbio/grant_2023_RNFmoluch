@@ -179,6 +179,14 @@
         "radiusSegments": 1,
         "capped": 0
       });
+	  window.nucl_cartoon_mov = nucl.addRepresentation('cartoon', {
+        "sele": "nucleic and (:I and 26-61)",
+        "color": 'magenta',
+        "aspectRatio": aspectRatio,
+        "radius": radius,
+        "radiusSegments": 1.1,
+        "capped": 0
+      });
       window.nucl_base = nucl.addRepresentation('base', {
         "sele": "nucleic",
         "color": 'grey'
@@ -291,6 +299,7 @@
       var state = $(this).is(":checked");
       if (state === false) {
         window.nucl_cartoon.setColor('grey')
+        window.nucl_cartoon_mov.setColor('grey')
         window.nucl_base.setColor('grey')
       } else {
         var scheme = NGL.ColormakerRegistry.addSelectionScheme([
@@ -298,6 +307,7 @@
           ["grey", "*"]
         ], "DA");
         window.nucl_cartoon.setColor(scheme)
+        window.nucl_cartoon_mov.setColor('grey')
         window.nucl_base.setColor(scheme)
 
       }
@@ -338,7 +348,8 @@
     <p style="color:#009933;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H4</p>
     <p style="color:#E0F705;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2A</p>
     <p style="color:#CE0000;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2B</p>
-    <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">DNA</p>
+    <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК</p>
+	<p style="color:#FF00FF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК, внешние потенциалы</p>
     <br>
     <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Blue</span> and <span style="color:orange;font-family:verdana;font-weight: bold">orange</span> balls mark <span style="color:steelblue;font-family:verdana;font-weight: bold">proximal</span> and <span style="color:orange;font-family:verdana;font-weight: bold">distal</span> entry/exit bais pairs.</p>
     <input class="form-check-input " type="checkbox" name="ref_str_check" value="" id="ref_str_check">
