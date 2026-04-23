@@ -171,9 +171,17 @@
         'diffuseInterior': false,
         'useInteriorColor': false
       });
-      window.nucl_cartoon = nucl.addRepresentation('cartoon', {
-        "sele": "nucleic",
+      window.nucl_cartoon_J = nucl.addRepresentation('cartoon', {
+        "sele": ":J",
         "color": 'grey',
+        "aspectRatio": aspectRatio,
+        "radius": radius,
+        "radiusSegments": 1,
+        "capped": 0
+      });
+      window.nucl_cartoon_I = nucl.addRepresentation('cartoon', {
+        "sele": ":I",
+        "color": 'cyan',
         "aspectRatio": aspectRatio,
         "radius": radius,
         "radiusSegments": 1,
@@ -298,16 +306,18 @@
     function toggle_DA_highlight() {
       var state = $(this).is(":checked");
       if (state === false) {
-        window.nucl_cartoon.setColor('grey')
-        window.nucl_cartoon_mov.setColor('grey')
+        window.nucl_cartoon_J.setColor('grey')
+        window.nucl_cartoon_I.setColor('cyan')
+        window.nucl_cartoon_mov.setColor('magenta')
         window.nucl_base.setColor('grey')
       } else {
         var scheme = NGL.ColormakerRegistry.addSelectionScheme([
           ["pink", "DA"],
           ["grey", "*"]
         ], "DA");
-        window.nucl_cartoon.setColor(scheme)
-        window.nucl_cartoon_mov.setColor('grey')
+        window.nucl_cartoon_J.setColor(scheme)
+        window.nucl_cartoon_I.setColor(scheme)
+        window.nucl_cartoon_mov.setColor(scheme)
         window.nucl_base.setColor(scheme)
 
       }
@@ -349,7 +359,8 @@
     <p style="color:#E0F705;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2A</p>
     <p style="color:#CE0000;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2B</p><br> 
     <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК</p><br> 
-	<p style="color:#FF00FF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК, внешние потенциалы</p>
+	<p style="color:#FF00FF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК, смещаемый фрагмент</p>
+	<p style="color:#00FFFF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК, фрагмент для выравнивания</p>
     <br>
     <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Синисй</span> и <span style="color:orange;font-family:verdana;font-weight: bold">оранжевый</span> шары обозначают <span style="color:steelblue;font-family:verdana;font-weight: bold">проксимальный</span> и <span style="color:orange;font-family:verdana;font-weight: bold">дистальный</span> концы ДНК</p>
     <input class="form-check-input " type="checkbox" name="ref_str_check" value="" id="ref_str_check">
