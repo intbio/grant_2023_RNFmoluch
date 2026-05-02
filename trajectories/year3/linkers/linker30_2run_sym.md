@@ -402,7 +402,7 @@
       <input type="range" min="0" max="100" value="0" class="slider" id="myRange">
       <p>Time: <span id="frame_counter"></span> ns</p>
 
-    </div>
 
+    </div>
   </body>
 </html>
