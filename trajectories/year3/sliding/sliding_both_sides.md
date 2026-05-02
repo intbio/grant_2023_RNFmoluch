@@ -1,5 +1,5 @@
 ### SHL -2 и +2, нижние цепи, повторность 1 - траектория молекулярной динамики нуклеосомы с управляемым формированием торсионного дефекта (PDB ID 3LZ0)
-[Назад](http://intbio.github.io/grant_2023_RNFmoluch/year3/)
+[Назад](http://intbio.github.io/grant_2023_RNFmoluch/year3.html)
 
 <html lang="en">
   <head>
