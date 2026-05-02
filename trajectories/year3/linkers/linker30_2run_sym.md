@@ -180,7 +180,7 @@
         "capped": 0
       });
       window.nucl_cartoon_I = nucl.addRepresentation('cartoon', {
-        "sele": ":I and -60-18",
+        "sele": ":I :J and 73-104",
         "color": 'cyan',
         "aspectRatio": aspectRatio,
         "radius": radius,
@@ -188,8 +188,8 @@
         "capped": 0
       });
 	  window.nucl_cartoon_mov = nucl.addRepresentation('cartoon', {
-        "sele": "nucleic and (:I and 26-61)",
-        "color": 'magenta',
+        "sele": ":I :J and -104--73",
+        "color": 'cyan',
         "aspectRatio": aspectRatio,
         "radius": radius,
         "radiusSegments": 1.1,
@@ -359,10 +359,9 @@
     <p style="color:#E0F705;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2A</p>
     <p style="color:#CE0000;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">H2B</p><br> 
     <p style="color:#808080;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК</p><br> 
-	<p style="color:#FF00FF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК, смещаемый фрагмент</p><br> 
-	<p style="color:#00FFFF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">ДНК, фрагмент для выравнивания</p>
+	<p style="color:#00FFFF;font-size:22px;font-family:verdana;font-weight: bold;text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;display: inline">Линкерная область ДНК</p><br> 
     <br>
-    <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Синий</span> и <span style="color:orange;font-family:verdana;font-weight: bold">оранжевый</span> шары обозначают <span style="color:steelblue;font-family:verdana;font-weight: bold">проксимальный</span> и <span style="color:orange;font-family:verdana;font-weight: bold">дистальный</span> концы ДНК</p>
+    <p><span style="color:steelblue;font-family:verdana;font-weight: bold">Синий</span> и <span style="color:orange;font-family:verdana;font-weight: bold">оранжевый</span> шары обозначают <span style="color:steelblue;font-family:verdana;font-weight: bold">проксимальный</span> и <span style="color:orange;font-family:verdana;font-weight: bold">дистальный</span> концы нуклеосомной ДНК</p>
     <input class="form-check-input " type="checkbox" name="ref_str_check" value="" id="ref_str_check">
     <label class="form-check-label " for="ref_str_check">
       Show starting state
