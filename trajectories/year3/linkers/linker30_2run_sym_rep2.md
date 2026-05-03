@@ -180,7 +180,7 @@
         "capped": 0
       });
       window.nucl_cartoon_I = nucl.addRepresentation('cartoon', {
-        "sele": ":I :J and 73-104",
+        "sele": "(:I or :J) and 73-104",
         "color": 'cyan',
         "aspectRatio": aspectRatio,
         "radius": radius,
@@ -188,7 +188,7 @@
         "capped": 0
       });
 	  window.nucl_cartoon_mov = nucl.addRepresentation('cartoon', {
-        "sele": ":I :J and -104--73",
+        "sele": "(:I or :J) and -104--73",
         "color": 'cyan',
         "aspectRatio": aspectRatio,
         "radius": radius,
@@ -404,5 +404,7 @@
 
 
     </div>
+	
   </body>
+  
 </html>
