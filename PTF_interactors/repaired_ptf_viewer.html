@@ -23,7 +23,7 @@ description: Repaired structures of PTF complexes with nuclear protein partners
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     margin-bottom: 2rem;
-    background-color: black;
+    background-color: white;
   }
   .protein-title {
     font-size: 1.5rem;
@@ -33,14 +33,29 @@ description: Repaired structures of PTF complexes with nuclear protein partners
   .sox2-label {
     color: #f093fb;
     font-weight: bold;
+    text-shadow: 
+    0 0 2px #aa5f00,
+    0 0 2px #aa5f00,
+    0 0 2px #aa5f00,
+    0 0 2px #aa5f00;
   }
   .klf4-label {
     color: #43e97b;
     font-weight: bold;
+    text-shadow: 
+    0 0 2px #38f9d7,
+    0 0 2px #38f9d7,
+    0 0 2px #38f9d7,
+    0 0 2px #38f9d7;
   }
   .partner-label {
     color: #d3d3d3;
     font-weight: bold;
+    text-shadow: 
+    0 0 2px #000,
+    0 0 2px #000,
+    0 0 2px #000,
+    0 0 2px #000;
   }
   .badge-score {
     font-size: 0.9em;
@@ -95,33 +110,19 @@ description: Repaired structures of PTF complexes with nuclear protein partners
   #structures-table td.dt-center {
     text-align: center;
   }
-  .ptf-badge {
-    padding: 0.25em 0.6em;
-    border-radius: 4px;
-    font-size: 0.85em;
-    font-weight: 600;
-  }
-  .ptf-sox2 {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-  }
-  .ptf-klf4 {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    color: white;
-  }
 </style>
 
 <div class="header text-center">
   <div class="container">
     <h1>PTF Protein Interactions</h1>
-    <p>Repaired structures of SOX2 and KLF4 complexes with nuclear protein partners</p>
+    <p>Repaired structures of PTF complexes with nuclear protein partners</p>
     <a href="https://intbio.org/Khasanova_et_al_2025/" class="btn btn-light">Back to Main Site</a>
   </div>
 </div>
 
 <div class="container">
   <div class="protein-title text-center">
-    <span id="ptf-name" class="sox2-label">PTF</span> + 
+    <span id="ptf-label" class="sox2-label">PTF</span> + 
     <span class="partner-label" id="partner-name">Protein Partner</span>
   </div>
   <div id="viewport"></div>
@@ -152,18 +153,15 @@ description: Repaired structures of PTF complexes with nuclear protein partners
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   window.stage = new NGL.Stage("viewport", {
-    backgroundColor: "black",
+    backgroundColor: "white",
     clipNear: 0,
     clipFar: 100,
     clipDist: 10
   });
-  
   window.structureComponents = {};
   window.loadedStructures = [];
-  window.selectedProteins = [];
   
-  // ===== ВСТАВЬТЕ СЮДА ВАШ КОД structuresByProtein ИЗ СТАРОГО HTML =====
-  
+  // ===== ВСТАВЬТЕ СЮДА structuresByProtein ИЗ ВАШЕГО СТАРОГО HTML =====
   const structuresByProtein = {
       sox2: [
           {
@@ -1944,118 +1942,95 @@ document.addEventListener('DOMContentLoaded', function() {
       ],
   };
 
-  
   // ===== КОНЕЦ БЛОКА ДАННЫХ =====
   
-  // Подготовка данных для таблицы
+  // Преобразуем данные в формат таблицы
   const tableData = [];
   let index = 0;
   
   for (const [ptfKey, structures] of Object.entries(structuresByProtein)) {
-    const ptfName = ptfKey.toUpperCase();
-    
     structures.forEach(struct => {
       tableData.push({
-        index: index++,
-        ptf: ptfName,
-        ptfKey: ptfKey,
+        view: `<input type="checkbox" class="struct-toggle" id="struct-${index}" data-pdb="${struct.pdbFile}" data-gene="${struct.gene}" data-ptf="${ptfKey}">`,
+        ptf: ptfKey.toUpperCase(),
         gene: struct.gene,
+        gene_link: `<a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene=${struct.gene}" target="_blank" class="gene-link">${struct.gene}</a>`,
         uniprot: struct.uniprot,
-        pdbFile: struct.pdbFile,
-        name: struct.name
+        uniprot_link: `<a href="https://www.uniprot.org/uniprotkb/${struct.uniprot}/entry" target="_blank" class="uniprot-link">${struct.uniprot}</a>`,
+        pdb: `<a href="repaired_structures/${struct.pdbFile}" class="download-btn" download>Download</a>`
       });
+      index++;
     });
   }
   
-  // Создание DataTable
   const table = $('#structures-table').DataTable({
     data: tableData,
     columns: [
       { 
-        data: null,
+        data: 'view',
         title: "View",
         orderable: false,
-        className: "dt-center",
-        render: function(data) {
-          return `<input type="checkbox" class="struct-toggle" 
-                    id="struct-${data.index}" 
-                    data-pdb="${data.pdbFile}" 
-                    data-gene="${data.gene}"
-                    data-ptf="${data.ptf}"
-                    data-ptfkey="${data.ptfKey}">`;
-        }
+        className: "dt-center"
       },
       { 
         data: 'ptf',
         title: "PTF",
-        render: function(data) {
-          const className = data === 'SOX2' ? 'ptf-sox2' : 'ptf-klf4';
-          return `<span class="ptf-badge ${className}">${data}</span>`;
-        },
         className: "dt-center"
       },
       { 
-        data: 'gene',
+        data: 'gene_link',
         title: "Gene",
         render: function(data, type) {
           if (type === 'sort' || type === 'filter') {
-            return data;
+            return $(data).text() || data;
           }
-          return `<a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene=${data}" 
-                    target="_blank" class="gene-link">${data}</a>`;
+          return data;
         }
       },
       { 
-        data: 'uniprot',
+        data: 'uniprot_link',
         title: "UniProt AC",
         render: function(data, type) {
           if (type === 'sort' || type === 'filter') {
-            return data;
+            return $(data).text() || data;
           }
-          return `<a href="https://www.uniprot.org/uniprotkb/${data}/entry" 
-                    target="_blank" class="uniprot-link">${data}</a>`;
+          return data;
         }
       },
       { 
-        data: 'pdbFile',
+        data: 'pdb',
         title: "PDB",
         orderable: false,
-        className: "dt-center",
-        render: function(data) {
-          return `<a href="repaired_structures/${data}" 
-                    class="download-btn" download>Download</a>`;
-        }
+        className: "dt-center"
       }
     ],
-    pageLength: 25,
-    order: [[1, 'asc'], [2, 'asc']]
+    createdRow: function(row, data) {
+      $(row).attr('data-gene', data.gene);
+      $(row).attr('data-uniprot', data.uniprot);
+    }
   });
-  
-  // Загрузка первой структуры
+
   setTimeout(() => {
     const firstCheckbox = $('#structures-table .struct-toggle').first();
     if (firstCheckbox.length) {
       firstCheckbox.prop('checked', true).trigger('change');
     }
   }, 500);
-  
-  // ===== ОБРАБОТЧИК ЧЕКБОКСОВ =====
+      
+  window.selectedProteins = [];
+  window.structureComponents = {};
+  window.loadedStructures = [];
+
   $('#structures-table').on('change', '.struct-toggle', async function() {
     const pdbFile = $(this).data('pdb');
     const geneName = $(this).data('gene');
-    const ptfName = $(this).data('ptf');
-    const ptfKey = $(this).data('ptfkey');
+    const ptfKey = $(this).data('ptf');
     const isChecked = $(this).is(":checked");
     
     try {
       if (isChecked) {
-        if (!window.selectedProteins.some(p => p.file === pdbFile)) {
-          window.selectedProteins.push({ 
-            name: geneName, 
-            file: pdbFile,
-            ptf: ptfName,
-            ptfKey: ptfKey
-          });
+        if (!window.selectedProteins.some(p => p.name === geneName)) {
+          window.selectedProteins.push({ name: geneName, file: pdbFile, ptf: ptfKey });
         }
 
         if (!window.structureComponents[pdbFile]) {
@@ -2063,7 +2038,9 @@ document.addEventListener('DOMContentLoaded', function() {
           
           const pathsToTry = [
             `repaired_structures/${pdbFile}`,
-            pdbFile
+            `repaired_structures/${pdbFile}.pdb`,
+            pdbFile, 
+            `${pdbFile}.pdb`
           ];
           
           let component;
@@ -2077,77 +2054,66 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           }
           
-          if (!component) {
-            throw new Error(`Failed to load ${pdbFile}`);
-          }
+          if (!component) throw new Error(`All loading attempts failed for ${pdbFile}`);
           
           window.structureComponents[pdbFile] = component;
           window.loadedStructures.push(component.structure);
           
-          // Цвета для разных PTF
           const ptfColor = ptfKey === 'sox2' ? '#f093fb' : '#43e97b';
           
           component.addRepresentation('cartoon', {
-            sele: ":A", 
-            color: ptfColor, 
-            aspectRatio: 2, 
-            radius: 1.5
+            sele: ":A", color: ptfColor, aspectRatio: 2, radius: 1.5
           });
-          
           component.addRepresentation('cartoon', {
-            sele: ":B", 
-            color: "#d3d3d3", 
-            aspectRatio: 2, 
-            radius: 1.5
+            sele: ":B", color: "#d3d3d3", aspectRatio: 2, radius: 1.5 
           });
           
           component.autoView();
           
-          // Выравнивание если несколько структур
           if (window.loadedStructures.length > 1) {
             try {
               await NGL.superpose(
                 window.loadedStructures,
                 "name CA"
               );
-              console.log("Structures aligned");
-            } catch (e) {
-              console.warn("Alignment failed:", e);
+              console.log("Structures aligned successfully");
+            } catch (superposeError) {
+              console.warn("Superposition failed:", superposeError);
             }
           }
         } else {
           window.structureComponents[pdbFile].setVisibility(true);
         }
       } else {
-        window.selectedProteins = window.selectedProteins.filter(p => p.file !== pdbFile);
+        window.selectedProteins = window.selectedProteins.filter(p => p.name !== geneName);
         window.structureComponents[pdbFile]?.setVisibility(false);
       }
       
       updateProteinTitle();
       
     } catch (error) {
-      console.error("Loading failed:", error);
+      console.error("Structure loading failed:", error);
       $(this).prop('checked', false);
-      alert(`Failed to load:\n${pdbFile}\n${error.message}`);
+      alert(`Failed to load structure:\n${pdbFile}\nError: ${error.message}`);
     }
   });
-  
+
   function updateProteinTitle() {
     if (window.selectedProteins.length === 0) {
-      $('#ptf-name').html('<span class="sox2-label">PTF</span>');
+      $('#ptf-label').html('<span class="sox2-label">PTF</span>');
       $('#partner-name').html('<span class="partner-label">Protein Partner</span>');
     } else {
-      const ptfNames = [...new Set(window.selectedProteins.map(p => p.ptf))];
-      const ptfHtml = ptfNames.map(ptf => {
-        const className = ptf === 'SOX2' ? 'sox2-label' : 'klf4-label';
-        return `<span class="${className}">${ptf}</span>`;
+      const ptfs = [...new Set(window.selectedProteins.map(p => p.ptf))];
+      const ptfLabels = ptfs.map(ptf => {
+        const className = ptf === 'sox2' ? 'sox2-label' : 'klf4-label';
+        return `<span class="${className}">${ptf.toUpperCase()}</span>`;
       }).join(' + ');
       
-      const partnerLabels = window.selectedProteins.map(p => 
-        `<span class="partner-label">${p.name}</span>`
+      const partnerLabels = window.selectedProteins.map(protein => 
+        `<span class="partner-label" data-pdb="${protein.file}">${protein.name}</span>`
       ).join(' + ');
       
-      $('#ptf-name').html(ptfHtml);
+      $('#ptf-label').html(ptfLabels);
       $('#partner-name').html(partnerLabels);
     }
   }
