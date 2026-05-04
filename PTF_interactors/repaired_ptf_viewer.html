@@ -1,0 +1,2293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визуализация PTF структур</title>
+    <script src="https://cdn.jsdelivr.net/npm/ngl@2.0.0-dev.37/dist/ngl.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 450px 1fr;
+            gap: 20px;
+        }
+
+        .structure-list {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            height: fit-content;
+            max-height: 800px;
+            overflow-y: auto;
+        }
+
+        .structure-list h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            position: sticky;
+            top: 0;
+            background: white;
+            padding-bottom: 10px;
+            z-index: 10;
+        }
+
+        .protein-group {
+            margin-bottom: 20px;
+        }
+
+        .protein-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .protein-header:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .protein-header.sox2 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .protein-header.oct4 {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .protein-header.klf4 {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .protein-title {
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .protein-count {
+            background: rgba(255, 255, 255, 0.3);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+        }
+
+        .collapse-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .protein-header.collapsed .collapse-icon {
+            transform: rotate(-90deg);
+        }
+
+        .structures-container {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .structures-container.collapsed {
+            max-height: 0;
+        }
+
+        /* Table styles */
+        .structures-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .structures-table th {
+            background: #f8f9fa;
+            padding: 10px 8px;
+            text-align: left;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .structures-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 0.9em;
+        }
+
+        .structures-table tbody tr {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .structures-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .structures-table tbody tr.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .structures-table tbody tr.active td {
+            border-bottom-color: #764ba2;
+        }
+
+        .view-btn {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #667eea;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.85em;
+        }
+
+        .structures-table tbody tr.active .view-btn {
+            background: white;
+            color: #667eea;
+        }
+
+        .structures-table tbody tr:hover .view-btn {
+            transform: scale(1.1);
+        }
+
+        .gene-cell {
+            font-weight: 600;
+        }
+
+        .uniprot-cell {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .structures-table tbody tr.active .uniprot-cell {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .pdb-cell {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .structures-table tbody tr.active .pdb-cell {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .viewer-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        #viewport {
+            width: 100%;
+            height: 600px;
+            border-radius: 10px;
+            background: #000;
+        }
+
+        .controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .info-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .structure-list {
+                max-height: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧬 Визуализация PTF структур</h1>
+            <p class="subtitle">Интерактивный просмотр белок-белковых взаимодействий SOX2, OCT4 и KLF4</p>
+        </header>
+
+        <div class="main-content">
+            <div class="structure-list">
+                <h2>📊 Структуры PTF</h2>
+                <div id="structureList"></div>
+            </div>
+
+            <div class="viewer-container">
+                <div id="viewport"></div>
+                
+                <div class="controls">
+                    <button onclick="stage.autoView()">🎯 По центру</button>
+                    <button onclick="toggleSpin()">🔄 Вращение</button>
+                    <button onclick="changeRepresentation('cartoon')">🎨 Cartoon</button>
+                    <button onclick="changeRepresentation('ball+stick')">⚪ Ball & Stick</button>
+                    <button onclick="changeRepresentation('surface')">🌊 Surface</button>
+                    <button onclick="changeRepresentation('ribbon')">📐 Ribbon</button>
+                    <button onclick="downloadPDB()">💾 Скачать PDB</button>
+                </div>
+
+                <div class="info-box">
+                    <strong>Управление:</strong> Левая кнопка мыши - вращение | Правая кнопка - перемещение | Колесико - зум
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== ДАННЫЕ СТРУКТУР ==========
+        // Замените этот объект на сгенерированный скриптом parse_structures.py
+        const structuresByProtein = {
+            sox2: [
+                {
+                    name: "SOX2 - AHRR",
+                    pdbFile: "P48431_A9YTQ3_Repair.pdb",
+                    description: "Repair (A9YTQ3)",
+                    gene: "AHRR",
+                    uniprot: "A9YTQ3"
+                },
+                {
+                    name: "SOX2 - IRF6",
+                    pdbFile: "P48431_O14896_Repair.pdb",
+                    description: "Repair (O14896)",
+                    gene: "IRF6",
+                    uniprot: "O14896"
+                },
+                {
+                    name: "SOX2 - ZBTB22",
+                    pdbFile: "P48431_O15209_Repair.pdb",
+                    description: "Repair (O15209)",
+                    gene: "ZBTB22",
+                    uniprot: "O15209"
+                },
+                {
+                    name: "SOX2 - HOXC11",
+                    pdbFile: "P48431_O43248_Repair.pdb",
+                    description: "Repair (O43248)",
+                    gene: "HOXC11",
+                    uniprot: "O43248"
+                },
+                {
+                    name: "SOX2 - EEF1E1",
+                    pdbFile: "P48431_O43324_Repair.pdb",
+                    description: "Repair (O43324)",
+                    gene: "EEF1E1",
+                    uniprot: "O43324"
+                },
+                {
+                    name: "SOX2 - RGS10",
+                    pdbFile: "P48431_O43665_Repair.pdb",
+                    description: "Repair (O43665)",
+                    gene: "RGS10",
+                    uniprot: "O43665"
+                },
+                {
+                    name: "SOX2 - SOX15",
+                    pdbFile: "P48431_O60248_Repair.pdb",
+                    description: "Repair (O60248)",
+                    gene: "SOX15",
+                    uniprot: "O60248"
+                },
+                {
+                    name: "SOX2 - GCM2",
+                    pdbFile: "P48431_O75603_Repair.pdb",
+                    description: "Repair (O75603)",
+                    gene: "GCM2",
+                    uniprot: "O75603"
+                },
+                {
+                    name: "SOX2 - DNAJC8",
+                    pdbFile: "P48431_O75937_Repair.pdb",
+                    description: "Repair (O75937)",
+                    gene: "DNAJC8",
+                    uniprot: "O75937"
+                },
+                {
+                    name: "SOX2 - UBOX5",
+                    pdbFile: "P48431_O94941_Repair.pdb",
+                    description: "Repair (O94941)",
+                    gene: "UBOX5",
+                    uniprot: "O94941"
+                },
+                {
+                    name: "SOX2 - SCAF4",
+                    pdbFile: "P48431_O95104_Repair.pdb",
+                    description: "Repair (O95104)",
+                    gene: "SCAF4",
+                    uniprot: "O95104"
+                },
+                {
+                    name: "SOX2 - H1-5",
+                    pdbFile: "P48431_P16401_Repair.pdb",
+                    description: "Repair (P16401)",
+                    gene: "H1-5",
+                    uniprot: "P16401"
+                },
+                {
+                    name: "SOX2 - ZNF37A",
+                    pdbFile: "P48431_P17032_Repair.pdb",
+                    description: "Repair (P17032)",
+                    gene: "ZNF37A",
+                    uniprot: "P17032"
+                },
+                {
+                    name: "SOX2 - CDKN2A",
+                    pdbFile: "P48431_P42771_Repair.pdb",
+                    description: "Repair (P42771)",
+                    gene: "CDKN2A",
+                    uniprot: "P42771"
+                },
+                {
+                    name: "SOX2 - MAGEA11",
+                    pdbFile: "P48431_P43364_Repair.pdb",
+                    description: "Repair (P43364)",
+                    gene: "MAGEA11",
+                    uniprot: "P43364"
+                },
+                {
+                    name: "SOX2 - CBX5",
+                    pdbFile: "P48431_P45973_Repair.pdb",
+                    description: "Repair (P45973)",
+                    gene: "CBX5",
+                    uniprot: "P45973"
+                },
+                {
+                    name: "SOX2 - UBE2E1",
+                    pdbFile: "P48431_P51965_Repair.pdb",
+                    description: "Repair (P51965)",
+                    gene: "UBE2E1",
+                    uniprot: "P51965"
+                },
+                {
+                    name: "SOX2 - POLR2K",
+                    pdbFile: "P48431_P53803_Repair.pdb",
+                    description: "Repair (P53803)",
+                    gene: "POLR2K",
+                    uniprot: "P53803"
+                },
+                {
+                    name: "SOX2 - HIRA",
+                    pdbFile: "P48431_P54198_Repair.pdb",
+                    description: "Repair (P54198)",
+                    gene: "HIRA",
+                    uniprot: "P54198"
+                },
+                {
+                    name: "SOX2 - SEC13",
+                    pdbFile: "P48431_P55735_Repair.pdb",
+                    description: "Repair (P55735)",
+                    gene: "SEC13",
+                    uniprot: "P55735"
+                },
+                {
+                    name: "SOX2 - WDR4",
+                    pdbFile: "P48431_P57081_Repair.pdb",
+                    description: "Repair (P57081)",
+                    gene: "WDR4",
+                    uniprot: "P57081"
+                },
+                {
+                    name: "SOX2 - EIF5A",
+                    pdbFile: "P48431_P63241_Repair.pdb",
+                    description: "Repair (P63241)",
+                    gene: "EIF5A",
+                    uniprot: "P63241"
+                },
+                {
+                    name: "SOX2 - IRF8",
+                    pdbFile: "P48431_Q02556_Repair.pdb",
+                    description: "Repair (Q02556)",
+                    gene: "IRF8",
+                    uniprot: "Q02556"
+                },
+                {
+                    name: "SOX2 - IRF5",
+                    pdbFile: "P48431_Q13568_Repair.pdb",
+                    description: "Repair (Q13568)",
+                    gene: "IRF5",
+                    uniprot: "Q13568"
+                },
+                {
+                    name: "SOX2 - ZMYM3",
+                    pdbFile: "P48431_Q14202_Repair.pdb",
+                    description: "Repair (Q14202)",
+                    gene: "ZMYM3",
+                    uniprot: "Q14202"
+                },
+                {
+                    name: "SOX2 - NFATC4",
+                    pdbFile: "P48431_Q14934_Repair.pdb",
+                    description: "Repair (Q14934)",
+                    gene: "NFATC4",
+                    uniprot: "Q14934"
+                },
+                {
+                    name: "SOX2 - PDCD2",
+                    pdbFile: "P48431_Q16342_Repair.pdb",
+                    description: "Repair (Q16342)",
+                    gene: "PDCD2",
+                    uniprot: "Q16342"
+                },
+                {
+                    name: "SOX2 - SPIN4",
+                    pdbFile: "P48431_Q56A73_Repair.pdb",
+                    description: "Repair (Q56A73)",
+                    gene: "SPIN4",
+                    uniprot: "Q56A73"
+                },
+                {
+                    name: "SOX2 - KHDC3L",
+                    pdbFile: "P48431_Q587J8_Repair.pdb",
+                    description: "Repair (Q587J8)",
+                    gene: "KHDC3L",
+                    uniprot: "Q587J8"
+                },
+                {
+                    name: "SOX2 - ARL6IP4",
+                    pdbFile: "P48431_Q66PJ3_Repair.pdb",
+                    description: "Repair (Q66PJ3)",
+                    gene: "ARL6IP4",
+                    uniprot: "Q66PJ3"
+                },
+                {
+                    name: "SOX2 - TRNP1",
+                    pdbFile: "P48431_Q6NT89_Repair.pdb",
+                    description: "Repair (Q6NT89)",
+                    gene: "TRNP1",
+                    uniprot: "Q6NT89"
+                },
+                {
+                    name: "SOX2 - SHLD3",
+                    pdbFile: "P48431_Q6ZNX1_Repair.pdb",
+                    description: "Repair (Q6ZNX1)",
+                    gene: "SHLD3",
+                    uniprot: "Q6ZNX1"
+                },
+                {
+                    name: "SOX2 - OLIG3",
+                    pdbFile: "P48431_Q7RTU3_Repair.pdb",
+                    description: "Repair (Q7RTU3)",
+                    gene: "OLIG3",
+                    uniprot: "Q7RTU3"
+                },
+                {
+                    name: "SOX2 - ZC3HC1",
+                    pdbFile: "P48431_Q86WB0_Repair.pdb",
+                    description: "Repair (Q86WB0)",
+                    gene: "ZC3HC1",
+                    uniprot: "Q86WB0"
+                },
+                {
+                    name: "SOX2 - NR2C2AP",
+                    pdbFile: "P48431_Q86WQ0_Repair.pdb",
+                    description: "Repair (Q86WQ0)",
+                    gene: "NR2C2AP",
+                    uniprot: "Q86WQ0"
+                },
+                {
+                    name: "SOX2 - TEN1",
+                    pdbFile: "P48431_Q86WV5_Repair.pdb",
+                    description: "Repair (Q86WV5)",
+                    gene: "TEN1",
+                    uniprot: "Q86WV5"
+                },
+                {
+                    name: "SOX2 - METTL23",
+                    pdbFile: "P48431_Q86XA0_Repair.pdb",
+                    description: "Repair (Q86XA0)",
+                    gene: "METTL23",
+                    uniprot: "Q86XA0"
+                },
+                {
+                    name: "SOX2 - NUP37",
+                    pdbFile: "P48431_Q8NFH4_Repair.pdb",
+                    description: "Repair (Q8NFH4)",
+                    gene: "NUP37",
+                    uniprot: "Q8NFH4"
+                },
+                {
+                    name: "SOX2 - TSTD1",
+                    pdbFile: "P48431_Q8NFU3_Repair.pdb",
+                    description: "Repair (Q8NFU3)",
+                    gene: "TSTD1",
+                    uniprot: "Q8NFU3"
+                },
+                {
+                    name: "SOX2 - TERB2",
+                    pdbFile: "P48431_Q8NHR7_Repair.pdb",
+                    description: "Repair (Q8NHR7)",
+                    gene: "TERB2",
+                    uniprot: "Q8NHR7"
+                },
+                {
+                    name: "SOX2 - HUS1B",
+                    pdbFile: "P48431_Q8NHY5_Repair.pdb",
+                    description: "Repair (Q8NHY5)",
+                    gene: "HUS1B",
+                    uniprot: "Q8NHY5"
+                },
+                {
+                    name: "SOX2 - SNIP1",
+                    pdbFile: "P48431_Q8TAD8_Repair.pdb",
+                    description: "Repair (Q8TAD8)",
+                    gene: "SNIP1",
+                    uniprot: "Q8TAD8"
+                },
+                {
+                    name: "SOX2 - BAHD1",
+                    pdbFile: "P48431_Q8TBE0_Repair.pdb",
+                    description: "Repair (Q8TBE0)",
+                    gene: "BAHD1",
+                    uniprot: "Q8TBE0"
+                },
+                {
+                    name: "SOX2 - KLF14",
+                    pdbFile: "P48431_Q8TD94_Repair.pdb",
+                    description: "Repair (Q8TD94)",
+                    gene: "KLF14",
+                    uniprot: "Q8TD94"
+                },
+                {
+                    name: "SOX2 - DDB2",
+                    pdbFile: "P48431_Q92466_Repair.pdb",
+                    description: "Repair (Q92466)",
+                    gene: "DDB2",
+                    uniprot: "Q92466"
+                },
+                {
+                    name: "SOX2 - BRF1",
+                    pdbFile: "P48431_Q92994_Repair.pdb",
+                    description: "Repair (Q92994)",
+                    gene: "BRF1",
+                    uniprot: "Q92994"
+                },
+                {
+                    name: "SOX2 - UTP4",
+                    pdbFile: "P48431_Q969X6_Repair.pdb",
+                    description: "Repair (Q969X6)",
+                    gene: "UTP4",
+                    uniprot: "Q969X6"
+                },
+                {
+                    name: "SOX2 - EEF1AKMT3",
+                    pdbFile: "P48431_Q96AZ1_Repair.pdb",
+                    description: "Repair (Q96AZ1)",
+                    gene: "EEF1AKMT3",
+                    uniprot: "Q96AZ1"
+                },
+                {
+                    name: "SOX2 - ISG20",
+                    pdbFile: "P48431_Q96AZ6_Repair.pdb",
+                    description: "Repair (Q96AZ6)",
+                    gene: "ISG20",
+                    uniprot: "Q96AZ6"
+                },
+                {
+                    name: "SOX2 - EXOSC8",
+                    pdbFile: "P48431_Q96B26_Repair.pdb",
+                    description: "Repair (Q96B26)",
+                    gene: "EXOSC8",
+                    uniprot: "Q96B26"
+                },
+                {
+                    name: "SOX2 - RMI2",
+                    pdbFile: "P48431_Q96E14_Repair.pdb",
+                    description: "Repair (Q96E14)",
+                    gene: "RMI2",
+                    uniprot: "Q96E14"
+                },
+                {
+                    name: "SOX2 - EEF2KMT",
+                    pdbFile: "P48431_Q96G04_Repair.pdb",
+                    description: "Repair (Q96G04)",
+                    gene: "EEF2KMT",
+                    uniprot: "Q96G04"
+                },
+                {
+                    name: "SOX2 - TEFM",
+                    pdbFile: "P48431_Q96QE5_Repair.pdb",
+                    description: "Repair (Q96QE5)",
+                    gene: "TEFM",
+                    uniprot: "Q96QE5"
+                },
+                {
+                    name: "SOX2 - TRIB3",
+                    pdbFile: "P48431_Q96RU7_Repair.pdb",
+                    description: "Repair (Q96RU7)",
+                    gene: "TRIB3",
+                    uniprot: "Q96RU7"
+                },
+                {
+                    name: "SOX2 - CGRRF1",
+                    pdbFile: "P48431_Q99675_Repair.pdb",
+                    description: "Repair (Q99675)",
+                    gene: "CGRRF1",
+                    uniprot: "Q99675"
+                },
+                {
+                    name: "SOX2 - COQ7",
+                    pdbFile: "P48431_Q99807_Repair.pdb",
+                    description: "Repair (Q99807)",
+                    gene: "COQ7",
+                    uniprot: "Q99807"
+                },
+                {
+                    name: "SOX2 - CIB1",
+                    pdbFile: "P48431_Q99828_Repair.pdb",
+                    description: "Repair (Q99828)",
+                    gene: "CIB1",
+                    uniprot: "Q99828"
+                },
+                {
+                    name: "SOX2 - SPIN2A",
+                    pdbFile: "P48431_Q99865_Repair.pdb",
+                    description: "Repair (Q99865)",
+                    gene: "SPIN2A",
+                    uniprot: "Q99865"
+                },
+                {
+                    name: "SOX2 - WDR77",
+                    pdbFile: "P48431_Q9BQA1_Repair.pdb",
+                    description: "Repair (Q9BQA1)",
+                    gene: "WDR77",
+                    uniprot: "Q9BQA1"
+                },
+                {
+                    name: "SOX2 - MED18",
+                    pdbFile: "P48431_Q9BUE0_Repair.pdb",
+                    description: "Repair (Q9BUE0)",
+                    gene: "MED18",
+                    uniprot: "Q9BUE0"
+                },
+                {
+                    name: "SOX2 - MIS12",
+                    pdbFile: "P48431_Q9H081_Repair.pdb",
+                    description: "Repair (Q9H081)",
+                    gene: "MIS12",
+                    uniprot: "Q9H081"
+                },
+                {
+                    name: "SOX2 - SGK2",
+                    pdbFile: "P48431_Q9HBY8_Repair.pdb",
+                    description: "Repair (Q9HBY8)",
+                    gene: "SGK2",
+                    uniprot: "Q9HBY8"
+                },
+                {
+                    name: "SOX2 - POLD4",
+                    pdbFile: "P48431_Q9HCU8_Repair.pdb",
+                    description: "Repair (Q9HCU8)",
+                    gene: "POLD4",
+                    uniprot: "Q9HCU8"
+                },
+                {
+                    name: "SOX2 - UBE2T",
+                    pdbFile: "P48431_Q9NPD8_Repair.pdb",
+                    description: "Repair (Q9NPD8)",
+                    gene: "UBE2T",
+                    uniprot: "Q9NPD8"
+                },
+                {
+                    name: "SOX2 - BATF3",
+                    pdbFile: "P48431_Q9NR55_Repair.pdb",
+                    description: "Repair (Q9NR55)",
+                    gene: "BATF3",
+                    uniprot: "Q9NR55"
+                },
+                {
+                    name: "SOX2 - SIRT3",
+                    pdbFile: "P48431_Q9NTG7_Repair.pdb",
+                    description: "Repair (Q9NTG7)",
+                    gene: "SIRT3",
+                    uniprot: "Q9NTG7"
+                },
+                {
+                    name: "SOX2 - AP5S1",
+                    pdbFile: "P48431_Q9NUS5_Repair.pdb",
+                    description: "Repair (Q9NUS5)",
+                    gene: "AP5S1",
+                    uniprot: "Q9NUS5"
+                },
+                {
+                    name: "SOX2 - HPF1",
+                    pdbFile: "P48431_Q9NWY4_Repair.pdb",
+                    description: "Repair (Q9NWY4)",
+                    gene: "HPF1",
+                    uniprot: "Q9NWY4"
+                },
+                {
+                    name: "SOX2 - GRHL1",
+                    pdbFile: "P48431_Q9NZI5_Repair.pdb",
+                    description: "Repair (Q9NZI5)",
+                    gene: "GRHL1",
+                    uniprot: "Q9NZI5"
+                },
+                {
+                    name: "SOX2 - LMCD1",
+                    pdbFile: "P48431_Q9NZU5_Repair.pdb",
+                    description: "Repair (Q9NZU5)",
+                    gene: "LMCD1",
+                    uniprot: "Q9NZU5"
+                },
+                {
+                    name: "SOX2 - BCCIP",
+                    pdbFile: "P48431_Q9P287_Repair.pdb",
+                    description: "Repair (Q9P287)",
+                    gene: "BCCIP",
+                    uniprot: "Q9P287"
+                },
+                {
+                    name: "SOX2 - LRWD1",
+                    pdbFile: "P48431_Q9UFC0_Repair.pdb",
+                    description: "Repair (Q9UFC0)",
+                    gene: "LRWD1",
+                    uniprot: "Q9UFC0"
+                },
+                {
+                    name: "SOX2 - SOX13",
+                    pdbFile: "P48431_Q9UN79_Repair.pdb",
+                    description: "Repair (Q9UN79)",
+                    gene: "SOX13",
+                    uniprot: "Q9UN79"
+                },
+                {
+                    name: "SOX2 - DUSP12",
+                    pdbFile: "P48431_Q9UNI6_Repair.pdb",
+                    description: "Repair (Q9UNI6)",
+                    gene: "DUSP12",
+                    uniprot: "Q9UNI6"
+                },
+                {
+                    name: "SOX2 - TCF19",
+                    pdbFile: "P48431_Q9Y242_Repair.pdb",
+                    description: "Repair (Q9Y242)",
+                    gene: "TCF19",
+                    uniprot: "Q9Y242"
+                },
+                {
+                    name: "SOX2 - RASD1",
+                    pdbFile: "P48431_Q9Y272_Repair.pdb",
+                    description: "Repair (Q9Y272)",
+                    gene: "RASD1",
+                    uniprot: "Q9Y272"
+                },
+                {
+                    name: "SOX2 - POLR3H",
+                    pdbFile: "P48431_Q9Y535_Repair.pdb",
+                    description: "Repair (Q9Y535)",
+                    gene: "POLR3H",
+                    uniprot: "Q9Y535"
+                },
+                {
+                    name: "SOX2 - HEMK2",
+                    pdbFile: "P48431_Q9Y5N5_Repair.pdb",
+                    description: "Repair (Q9Y5N5)",
+                    gene: "HEMK2",
+                    uniprot: "Q9Y5N5"
+                },
+            ],
+            oct4: [
+                {
+                    name: "OCT4 - MEIOC",
+                    pdbFile: "Q01860_A2RUB1_Repair.pdb",
+                    description: "Repair (A2RUB1)",
+                    gene: "MEIOC",
+                    uniprot: "A2RUB1"
+                },
+                {
+                    name: "OCT4 - PMS2P5",
+                    pdbFile: "Q01860_A8MQ11_Repair.pdb",
+                    description: "Repair (A8MQ11)",
+                    gene: "PMS2P5",
+                    uniprot: "A8MQ11"
+                },
+                {
+                    name: "OCT4 - NOTO",
+                    pdbFile: "Q01860_A8MTQ0_Repair.pdb",
+                    description: "Repair (A8MTQ0)",
+                    gene: "NOTO",
+                    uniprot: "A8MTQ0"
+                },
+                {
+                    name: "OCT4 - NFIB",
+                    pdbFile: "Q01860_O00712_Repair.pdb",
+                    description: "Repair (O00712)",
+                    gene: "NFIB",
+                    uniprot: "O00712"
+                },
+                {
+                    name: "OCT4 - DYNC1I1",
+                    pdbFile: "Q01860_O14576_Repair.pdb",
+                    description: "Repair (O14576)",
+                    gene: "DYNC1I1",
+                    uniprot: "O14576"
+                },
+                {
+                    name: "OCT4 - WDR46",
+                    pdbFile: "Q01860_O15213_Repair.pdb",
+                    description: "Repair (O15213)",
+                    gene: "WDR46",
+                    uniprot: "O15213"
+                },
+                {
+                    name: "OCT4 - DYNC1LI2",
+                    pdbFile: "Q01860_O43237_Repair.pdb",
+                    description: "Repair (O43237)",
+                    gene: "DYNC1LI2",
+                    uniprot: "O43237"
+                },
+                {
+                    name: "OCT4 - HOXC11",
+                    pdbFile: "Q01860_O43248_Repair.pdb",
+                    description: "Repair (O43248)",
+                    gene: "HOXC11",
+                    uniprot: "O43248"
+                },
+                {
+                    name: "OCT4 - HTATSF1",
+                    pdbFile: "Q01860_O43719_Repair.pdb",
+                    description: "Repair (O43719)",
+                    gene: "HTATSF1",
+                    uniprot: "O43719"
+                },
+                {
+                    name: "OCT4 - DKC1",
+                    pdbFile: "Q01860_O60832_Repair.pdb",
+                    description: "Repair (O60832)",
+                    gene: "DKC1",
+                    uniprot: "O60832"
+                },
+                {
+                    name: "OCT4 - DUSP11",
+                    pdbFile: "Q01860_O75319_Repair.pdb",
+                    description: "Repair (O75319)",
+                    gene: "DUSP11",
+                    uniprot: "O75319"
+                },
+                {
+                    name: "OCT4 - SPAG7",
+                    pdbFile: "Q01860_O75391_Repair.pdb",
+                    description: "Repair (O75391)",
+                    gene: "SPAG7",
+                    uniprot: "O75391"
+                },
+                {
+                    name: "OCT4 - DEAF1",
+                    pdbFile: "Q01860_O75398_Repair.pdb",
+                    description: "Repair (O75398)",
+                    gene: "DEAF1",
+                    uniprot: "O75398"
+                },
+                {
+                    name: "OCT4 - NCR1",
+                    pdbFile: "Q01860_O76036_Repair.pdb",
+                    description: "Repair (O76036)",
+                    gene: "NCR1",
+                    uniprot: "O76036"
+                },
+                {
+                    name: "OCT4 - ALX3",
+                    pdbFile: "Q01860_O95076_Repair.pdb",
+                    description: "Repair (O95076)",
+                    gene: "ALX3",
+                    uniprot: "O95076"
+                },
+                {
+                    name: "OCT4 - SOX14",
+                    pdbFile: "Q01860_O95416_Repair.pdb",
+                    description: "Repair (O95416)",
+                    gene: "SOX14",
+                    uniprot: "O95416"
+                },
+                {
+                    name: "OCT4 - BRD1",
+                    pdbFile: "Q01860_O95696_Repair.pdb",
+                    description: "Repair (O95696)",
+                    gene: "BRD1",
+                    uniprot: "O95696"
+                },
+                {
+                    name: "OCT4 - LDOC1",
+                    pdbFile: "Q01860_O95751_Repair.pdb",
+                    description: "Repair (O95751)",
+                    gene: "LDOC1",
+                    uniprot: "O95751"
+                },
+                {
+                    name: "OCT4 - TP53",
+                    pdbFile: "Q01860_P04637_Repair.pdb",
+                    description: "Repair (P04637)",
+                    gene: "TP53",
+                    uniprot: "P04637"
+                },
+                {
+                    name: "OCT4 - NFIC",
+                    pdbFile: "Q01860_P08651_Repair.pdb",
+                    description: "Repair (P08651)",
+                    gene: "NFIC",
+                    uniprot: "P08651"
+                },
+                {
+                    name: "OCT4 - WEE2",
+                    pdbFile: "Q01860_P0C1S8_Repair.pdb",
+                    description: "Repair (P0C1S8)",
+                    gene: "WEE2",
+                    uniprot: "P0C1S8"
+                },
+                {
+                    name: "OCT4 - CDK4",
+                    pdbFile: "Q01860_P11802_Repair.pdb",
+                    description: "Repair (P11802)",
+                    gene: "CDK4",
+                    uniprot: "P11802"
+                },
+                {
+                    name: "OCT4 - GZMA",
+                    pdbFile: "Q01860_P12544_Repair.pdb",
+                    description: "Repair (P12544)",
+                    gene: "GZMA",
+                    uniprot: "P12544"
+                },
+                {
+                    name: "OCT4 - GATA1",
+                    pdbFile: "Q01860_P15976_Repair.pdb",
+                    description: "Repair (P15976)",
+                    gene: "GATA1",
+                    uniprot: "P15976"
+                },
+                {
+                    name: "OCT4 - GATA2",
+                    pdbFile: "Q01860_P23769_Repair.pdb",
+                    description: "Repair (P23769)",
+                    gene: "GATA2",
+                    uniprot: "P23769"
+                },
+                {
+                    name: "OCT4 - GATA3",
+                    pdbFile: "Q01860_P23771_Repair.pdb",
+                    description: "Repair (P23771)",
+                    gene: "GATA3",
+                    uniprot: "P23771"
+                },
+                {
+                    name: "OCT4 - PSMA1",
+                    pdbFile: "Q01860_P25786_Repair.pdb",
+                    description: "Repair (P25786)",
+                    gene: "PSMA1",
+                    uniprot: "P25786"
+                },
+                {
+                    name: "OCT4 - RBMS1",
+                    pdbFile: "Q01860_P29558_Repair.pdb",
+                    description: "Repair (P29558)",
+                    gene: "RBMS1",
+                    uniprot: "P29558"
+                },
+                {
+                    name: "OCT4 - HOXA11",
+                    pdbFile: "Q01860_P31270_Repair.pdb",
+                    description: "Repair (P31270)",
+                    gene: "HOXA11",
+                    uniprot: "P31270"
+                },
+                {
+                    name: "OCT4 - RPA3",
+                    pdbFile: "Q01860_P35244_Repair.pdb",
+                    description: "Repair (P35244)",
+                    gene: "RPA3",
+                    uniprot: "P35244"
+                },
+                {
+                    name: "OCT4 - SOX18",
+                    pdbFile: "Q01860_P35713_Repair.pdb",
+                    description: "Repair (P35713)",
+                    gene: "SOX18",
+                    uniprot: "P35713"
+                },
+                {
+                    name: "OCT4 - GATA4",
+                    pdbFile: "Q01860_P43694_Repair.pdb",
+                    description: "Repair (P43694)",
+                    gene: "GATA4",
+                    uniprot: "P43694"
+                },
+                {
+                    name: "OCT4 - HINT1",
+                    pdbFile: "Q01860_P49773_Repair.pdb",
+                    description: "Repair (P49773)",
+                    gene: "HINT1",
+                    uniprot: "P49773"
+                },
+                {
+                    name: "OCT4 - POLR2H",
+                    pdbFile: "Q01860_P52434_Repair.pdb",
+                    description: "Repair (P52434)",
+                    gene: "POLR2H",
+                    uniprot: "P52434"
+                },
+                {
+                    name: "OCT4 - CLNS1A",
+                    pdbFile: "Q01860_P54105_Repair.pdb",
+                    description: "Repair (P54105)",
+                    gene: "CLNS1A",
+                    uniprot: "P54105"
+                },
+                {
+                    name: "OCT4 - PRRX1",
+                    pdbFile: "Q01860_P54821_Repair.pdb",
+                    description: "Repair (P54821)",
+                    gene: "PRRX1",
+                    uniprot: "P54821"
+                },
+                {
+                    name: "OCT4 - PAX9",
+                    pdbFile: "Q01860_P55771_Repair.pdb",
+                    description: "Repair (P55771)",
+                    gene: "PAX9",
+                    uniprot: "P55771"
+                },
+                {
+                    name: "OCT4 - RBM11",
+                    pdbFile: "Q01860_P57052_Repair.pdb",
+                    description: "Repair (P57052)",
+                    gene: "RBM11",
+                    uniprot: "P57052"
+                },
+                {
+                    name: "OCT4 - WDR4",
+                    pdbFile: "Q01860_P57081_Repair.pdb",
+                    description: "Repair (P57081)",
+                    gene: "WDR4",
+                    uniprot: "P57081"
+                },
+                {
+                    name: "OCT4 - NANOS3",
+                    pdbFile: "Q01860_P60323_Repair.pdb",
+                    description: "Repair (P60323)",
+                    gene: "NANOS3",
+                    uniprot: "P60323"
+                },
+                {
+                    name: "OCT4 - PPP4C",
+                    pdbFile: "Q01860_P60510_Repair.pdb",
+                    description: "Repair (P60510)",
+                    gene: "PPP4C",
+                    uniprot: "P60510"
+                },
+                {
+                    name: "OCT4 - RPS3A",
+                    pdbFile: "Q01860_P61247_Repair.pdb",
+                    description: "Repair (P61247)",
+                    gene: "RPS3A",
+                    uniprot: "P61247"
+                },
+                {
+                    name: "OCT4 - RPS16",
+                    pdbFile: "Q01860_P62249_Repair.pdb",
+                    description: "Repair (P62249)",
+                    gene: "RPS16",
+                    uniprot: "P62249"
+                },
+                {
+                    name: "OCT4 - TBPL1",
+                    pdbFile: "Q01860_P62380_Repair.pdb",
+                    description: "Repair (P62380)",
+                    gene: "TBPL1",
+                    uniprot: "P62380"
+                },
+                {
+                    name: "OCT4 - PPP2CB",
+                    pdbFile: "Q01860_P62714_Repair.pdb",
+                    description: "Repair (P62714)",
+                    gene: "PPP2CB",
+                    uniprot: "P62714"
+                },
+                {
+                    name: "OCT4 - TLE1",
+                    pdbFile: "Q01860_Q04724_Repair.pdb",
+                    description: "Repair (Q04724)",
+                    gene: "TLE1",
+                    uniprot: "Q04724"
+                },
+                {
+                    name: "OCT4 - TLE3",
+                    pdbFile: "Q01860_Q04726_Repair.pdb",
+                    description: "Repair (Q04726)",
+                    gene: "TLE3",
+                    uniprot: "Q04726"
+                },
+                {
+                    name: "OCT4 - TLE4",
+                    pdbFile: "Q01860_Q04727_Repair.pdb",
+                    description: "Repair (Q04727)",
+                    gene: "TLE4",
+                    uniprot: "Q04727"
+                },
+                {
+                    name: "OCT4 - PAX8",
+                    pdbFile: "Q01860_Q06710_Repair.pdb",
+                    description: "Repair (Q06710)",
+                    gene: "PAX8",
+                    uniprot: "Q06710"
+                },
+                {
+                    name: "OCT4 - SRSF1",
+                    pdbFile: "Q01860_Q07955_Repair.pdb",
+                    description: "Repair (Q07955)",
+                    gene: "SRSF1",
+                    uniprot: "Q07955"
+                },
+                {
+                    name: "OCT4 - NFIA",
+                    pdbFile: "Q01860_Q12857_Repair.pdb",
+                    description: "Repair (Q12857)",
+                    gene: "NFIA",
+                    uniprot: "Q12857"
+                },
+                {
+                    name: "OCT4 - SRSF5",
+                    pdbFile: "Q01860_Q13243_Repair.pdb",
+                    description: "Repair (Q13243)",
+                    gene: "SRSF5",
+                    uniprot: "Q13243"
+                },
+                {
+                    name: "OCT4 - SRSF6",
+                    pdbFile: "Q01860_Q13247_Repair.pdb",
+                    description: "Repair (Q13247)",
+                    gene: "SRSF6",
+                    uniprot: "Q13247"
+                },
+                {
+                    name: "OCT4 - CBFB",
+                    pdbFile: "Q01860_Q13951_Repair.pdb",
+                    description: "Repair (Q13951)",
+                    gene: "CBFB",
+                    uniprot: "Q13951"
+                },
+                {
+                    name: "OCT4 - SMAD1",
+                    pdbFile: "Q01860_Q15797_Repair.pdb",
+                    description: "Repair (Q15797)",
+                    gene: "SMAD1",
+                    uniprot: "Q15797"
+                },
+                {
+                    name: "OCT4 - TAF12",
+                    pdbFile: "Q01860_Q16514_Repair.pdb",
+                    description: "Repair (Q16514)",
+                    gene: "TAF12",
+                    uniprot: "Q16514"
+                },
+                {
+                    name: "OCT4 - TATDN3",
+                    pdbFile: "Q01860_Q17R31_Repair.pdb",
+                    description: "Repair (Q17R31)",
+                    gene: "TATDN3",
+                    uniprot: "Q17R31"
+                },
+                {
+                    name: "OCT4 - PPP4R3B",
+                    pdbFile: "Q01860_Q5MIZ7_Repair.pdb",
+                    description: "Repair (Q5MIZ7)",
+                    gene: "PPP4R3B",
+                    uniprot: "Q5MIZ7"
+                },
+                {
+                    name: "OCT4 - INTS11",
+                    pdbFile: "Q01860_Q5TA45_Repair.pdb",
+                    description: "Repair (Q5TA45)",
+                    gene: "INTS11",
+                    uniprot: "Q5TA45"
+                },
+                {
+                    name: "OCT4 - CENPP",
+                    pdbFile: "Q01860_Q6IPU0_Repair.pdb",
+                    description: "Repair (Q6IPU0)",
+                    gene: "CENPP",
+                    uniprot: "Q6IPU0"
+                },
+                {
+                    name: "OCT4 - SMARCD3",
+                    pdbFile: "Q01860_Q6STE5_Repair.pdb",
+                    description: "Repair (Q6STE5)",
+                    gene: "SMARCD3",
+                    uniprot: "Q6STE5"
+                },
+                {
+                    name: "OCT4 - ZNF704",
+                    pdbFile: "Q01860_Q6ZNC4_Repair.pdb",
+                    description: "Repair (Q6ZNC4)",
+                    gene: "ZNF704",
+                    uniprot: "Q6ZNC4"
+                },
+                {
+                    name: "OCT4 - SHLD3",
+                    pdbFile: "Q01860_Q6ZNX1_Repair.pdb",
+                    description: "Repair (Q6ZNX1)",
+                    gene: "SHLD3",
+                    uniprot: "Q6ZNX1"
+                },
+                {
+                    name: "OCT4 - SPRED1",
+                    pdbFile: "Q01860_Q7Z699_Repair.pdb",
+                    description: "Repair (Q7Z699)",
+                    gene: "SPRED1",
+                    uniprot: "Q7Z699"
+                },
+                {
+                    name: "OCT4 - PLD3",
+                    pdbFile: "Q01860_Q8IV08_Repair.pdb",
+                    description: "Repair (Q8IV08)",
+                    gene: "PLD3",
+                    uniprot: "Q8IV08"
+                },
+                {
+                    name: "OCT4 - DCUN1D3",
+                    pdbFile: "Q01860_Q8IWE4_Repair.pdb",
+                    description: "Repair (Q8IWE4)",
+                    gene: "DCUN1D3",
+                    uniprot: "Q8IWE4"
+                },
+                {
+                    name: "OCT4 - BATF2",
+                    pdbFile: "Q01860_Q8N1L9_Repair.pdb",
+                    description: "Repair (Q8N1L9)",
+                    gene: "BATF2",
+                    uniprot: "Q8N1L9"
+                },
+                {
+                    name: "OCT4 - RPP25L",
+                    pdbFile: "Q01860_Q8N5L8_Repair.pdb",
+                    description: "Repair (Q8N5L8)",
+                    gene: "RPP25L",
+                    uniprot: "Q8N5L8"
+                },
+                {
+                    name: "OCT4 - PRPF38A",
+                    pdbFile: "Q01860_Q8NAV1_Repair.pdb",
+                    description: "Repair (Q8NAV1)",
+                    gene: "PRPF38A",
+                    uniprot: "Q8NAV1"
+                },
+                {
+                    name: "OCT4 - CPEB3",
+                    pdbFile: "Q01860_Q8NE35_Repair.pdb",
+                    description: "Repair (Q8NE35)",
+                    gene: "CPEB3",
+                    uniprot: "Q8NE35"
+                },
+                {
+                    name: "OCT4 - DMBX1",
+                    pdbFile: "Q01860_Q8NFW5_Repair.pdb",
+                    description: "Repair (Q8NFW5)",
+                    gene: "DMBX1",
+                    uniprot: "Q8NFW5"
+                },
+                {
+                    name: "OCT4 - NFKBID",
+                    pdbFile: "Q01860_Q8NI38_Repair.pdb",
+                    description: "Repair (Q8NI38)",
+                    gene: "NFKBID",
+                    uniprot: "Q8NI38"
+                },
+                {
+                    name: "OCT4 - OSR1",
+                    pdbFile: "Q01860_Q8TAX0_Repair.pdb",
+                    description: "Repair (Q8TAX0)",
+                    gene: "OSR1",
+                    uniprot: "Q8TAX0"
+                },
+                {
+                    name: "OCT4 - BAHD1",
+                    pdbFile: "Q01860_Q8TBE0_Repair.pdb",
+                    description: "Repair (Q8TBE0)",
+                    gene: "BAHD1",
+                    uniprot: "Q8TBE0"
+                },
+                {
+                    name: "OCT4 - ELP5",
+                    pdbFile: "Q01860_Q8TE02_Repair.pdb",
+                    description: "Repair (Q8TE02)",
+                    gene: "ELP5",
+                    uniprot: "Q8TE02"
+                },
+                {
+                    name: "OCT4 - NUDCD2",
+                    pdbFile: "Q01860_Q8WVJ2_Repair.pdb",
+                    description: "Repair (Q8WVJ2)",
+                    gene: "NUDCD2",
+                    uniprot: "Q8WVJ2"
+                },
+                {
+                    name: "OCT4 - TSEN15",
+                    pdbFile: "Q01860_Q8WW01_Repair.pdb",
+                    description: "Repair (Q8WW01)",
+                    gene: "TSEN15",
+                    uniprot: "Q8WW01"
+                },
+                {
+                    name: "OCT4 - BBX",
+                    pdbFile: "Q01860_Q8WY36_Repair.pdb",
+                    description: "Repair (Q8WY36)",
+                    gene: "BBX",
+                    uniprot: "Q8WY36"
+                },
+                {
+                    name: "OCT4 - RSC1A1",
+                    pdbFile: "Q01860_Q92681_Repair.pdb",
+                    description: "Repair (Q92681)",
+                    gene: "RSC1A1",
+                    uniprot: "Q92681"
+                },
+                {
+                    name: "OCT4 - DPF1",
+                    pdbFile: "Q01860_Q92782_Repair.pdb",
+                    description: "Repair (Q92782)",
+                    gene: "DPF1",
+                    uniprot: "Q92782"
+                },
+                {
+                    name: "OCT4 - GATA6",
+                    pdbFile: "Q01860_Q92908_Repair.pdb",
+                    description: "Repair (Q92908)",
+                    gene: "GATA6",
+                    uniprot: "Q92908"
+                },
+                {
+                    name: "OCT4 - KAT5",
+                    pdbFile: "Q01860_Q92993_Repair.pdb",
+                    description: "Repair (Q92993)",
+                    gene: "KAT5",
+                    uniprot: "Q92993"
+                },
+                {
+                    name: "OCT4 - LSM10",
+                    pdbFile: "Q01860_Q969L4_Repair.pdb",
+                    description: "Repair (Q969L4)",
+                    gene: "LSM10",
+                    uniprot: "Q969L4"
+                },
+                {
+                    name: "OCT4 - HDAC10",
+                    pdbFile: "Q01860_Q969S8_Repair.pdb",
+                    description: "Repair (Q969S8)",
+                    gene: "HDAC10",
+                    uniprot: "Q969S8"
+                },
+                {
+                    name: "OCT4 - RMI2",
+                    pdbFile: "Q01860_Q96E14_Repair.pdb",
+                    description: "Repair (Q96E14)",
+                    gene: "RMI2",
+                    uniprot: "Q96E14"
+                },
+                {
+                    name: "OCT4 - SAAL1",
+                    pdbFile: "Q01860_Q96ER3_Repair.pdb",
+                    description: "Repair (Q96ER3)",
+                    gene: "SAAL1",
+                    uniprot: "Q96ER3"
+                },
+                {
+                    name: "OCT4 - EEF2KMT",
+                    pdbFile: "Q01860_Q96G04_Repair.pdb",
+                    description: "Repair (Q96G04)",
+                    gene: "EEF2KMT",
+                    uniprot: "Q96G04"
+                },
+                {
+                    name: "OCT4 - BOD1",
+                    pdbFile: "Q01860_Q96IK1_Repair.pdb",
+                    description: "Repair (Q96IK1)",
+                    gene: "BOD1",
+                    uniprot: "Q96IK1"
+                },
+                {
+                    name: "OCT4 - NSL1",
+                    pdbFile: "Q01860_Q96IY1_Repair.pdb",
+                    description: "Repair (Q96IY1)",
+                    gene: "NSL1",
+                    uniprot: "Q96IY1"
+                },
+                {
+                    name: "OCT4 - THOC3",
+                    pdbFile: "Q01860_Q96J01_Repair.pdb",
+                    description: "Repair (Q96J01)",
+                    gene: "THOC3",
+                    uniprot: "Q96J01"
+                },
+                {
+                    name: "OCT4 - ARX",
+                    pdbFile: "Q01860_Q96QS3_Repair.pdb",
+                    description: "Repair (Q96QS3)",
+                    gene: "ARX",
+                    uniprot: "Q96QS3"
+                },
+                {
+                    name: "OCT4 - PARK7",
+                    pdbFile: "Q01860_Q99497_Repair.pdb",
+                    description: "Repair (Q99497)",
+                    gene: "PARK7",
+                    uniprot: "Q99497"
+                },
+                {
+                    name: "OCT4 - TEAD3",
+                    pdbFile: "Q01860_Q99594_Repair.pdb",
+                    description: "Repair (Q99594)",
+                    gene: "TEAD3",
+                    uniprot: "Q99594"
+                },
+                {
+                    name: "OCT4 - COQ7",
+                    pdbFile: "Q01860_Q99807_Repair.pdb",
+                    description: "Repair (Q99807)",
+                    gene: "COQ7",
+                    uniprot: "Q99807"
+                },
+                {
+                    name: "OCT4 - PRRX2",
+                    pdbFile: "Q01860_Q99811_Repair.pdb",
+                    description: "Repair (Q99811)",
+                    gene: "PRRX2",
+                    uniprot: "Q99811"
+                },
+                {
+                    name: "OCT4 - MYD88",
+                    pdbFile: "Q01860_Q99836_Repair.pdb",
+                    description: "Repair (Q99836)",
+                    gene: "MYD88",
+                    uniprot: "Q99836"
+                },
+                {
+                    name: "OCT4 - MACROD1",
+                    pdbFile: "Q01860_Q9BQ69_Repair.pdb",
+                    description: "Repair (Q9BQ69)",
+                    gene: "MACROD1",
+                    uniprot: "Q9BQ69"
+                },
+                {
+                    name: "OCT4 - PAAF1",
+                    pdbFile: "Q01860_Q9BRP4_Repair.pdb",
+                    description: "Repair (Q9BRP4)",
+                    gene: "PAAF1",
+                    uniprot: "Q9BRP4"
+                },
+                {
+                    name: "OCT4 - GINS3",
+                    pdbFile: "Q01860_Q9BRX5_Repair.pdb",
+                    description: "Repair (Q9BRX5)",
+                    gene: "GINS3",
+                    uniprot: "Q9BRX5"
+                },
+                {
+                    name: "OCT4 - MRI1",
+                    pdbFile: "Q01860_Q9BV20_Repair.pdb",
+                    description: "Repair (Q9BV20)",
+                    gene: "MRI1",
+                    uniprot: "Q9BV20"
+                },
+                {
+                    name: "OCT4 - DSCC1",
+                    pdbFile: "Q01860_Q9BVC3_Repair.pdb",
+                    description: "Repair (Q9BVC3)",
+                    gene: "DSCC1",
+                    uniprot: "Q9BVC3"
+                },
+                {
+                    name: "OCT4 - GATA5",
+                    pdbFile: "Q01860_Q9BWX5_Repair.pdb",
+                    description: "Repair (Q9BWX5)",
+                    gene: "GATA5",
+                    uniprot: "Q9BWX5"
+                },
+                {
+                    name: "OCT4 - NKX6-2",
+                    pdbFile: "Q01860_Q9C056_Repair.pdb",
+                    description: "Repair (Q9C056)",
+                    gene: "NKX6-2",
+                    uniprot: "Q9C056"
+                },
+                {
+                    name: "OCT4 - CTDSP1",
+                    pdbFile: "Q01860_Q9GZU7_Repair.pdb",
+                    description: "Repair (Q9GZU7)",
+                    gene: "CTDSP1",
+                    uniprot: "Q9GZU7"
+                },
+                {
+                    name: "OCT4 - ZCWPW1",
+                    pdbFile: "Q01860_Q9H0M4_Repair.pdb",
+                    description: "Repair (Q9H0M4)",
+                    gene: "ZCWPW1",
+                    uniprot: "Q9H0M4"
+                },
+                {
+                    name: "OCT4 - WDR13",
+                    pdbFile: "Q01860_Q9H1Z4_Repair.pdb",
+                    description: "Repair (Q9H1Z4)",
+                    gene: "WDR13",
+                    uniprot: "Q9H1Z4"
+                },
+                {
+                    name: "OCT4 - SENP3",
+                    pdbFile: "Q01860_Q9H4L4_Repair.pdb",
+                    description: "Repair (Q9H4L4)",
+                    gene: "SENP3",
+                    uniprot: "Q9H4L4"
+                },
+                {
+                    name: "OCT4 - SOX17",
+                    pdbFile: "Q01860_Q9H6I2_Repair.pdb",
+                    description: "Repair (Q9H6I2)",
+                    gene: "SOX17",
+                    uniprot: "Q9H6I2"
+                },
+                {
+                    name: "OCT4 - VCPKMT",
+                    pdbFile: "Q01860_Q9H867_Repair.pdb",
+                    description: "Repair (Q9H867)",
+                    gene: "VCPKMT",
+                    uniprot: "Q9H867"
+                },
+                {
+                    name: "OCT4 - NHEJ1",
+                    pdbFile: "Q01860_Q9H9Q4_Repair.pdb",
+                    description: "Repair (Q9H9Q4)",
+                    gene: "NHEJ1",
+                    uniprot: "Q9H9Q4"
+                },
+                {
+                    name: "OCT4 - METTL14",
+                    pdbFile: "Q01860_Q9HCE5_Repair.pdb",
+                    description: "Repair (Q9HCE5)",
+                    gene: "METTL14",
+                    uniprot: "Q9HCE5"
+                },
+                {
+                    name: "OCT4 - NT5M",
+                    pdbFile: "Q01860_Q9NPB1_Repair.pdb",
+                    description: "Repair (Q9NPB1)",
+                    gene: "NT5M",
+                    uniprot: "Q9NPB1"
+                },
+                {
+                    name: "OCT4 - DDX21",
+                    pdbFile: "Q01860_Q9NR30_Repair.pdb",
+                    description: "Repair (Q9NR30)",
+                    gene: "DDX21",
+                    uniprot: "Q9NR30"
+                },
+                {
+                    name: "OCT4 - BMP2K",
+                    pdbFile: "Q01860_Q9NSY1_Repair.pdb",
+                    description: "Repair (Q9NSY1)",
+                    gene: "BMP2K",
+                    uniprot: "Q9NSY1"
+                },
+                {
+                    name: "OCT4 - AIRIM",
+                    pdbFile: "Q01860_Q9NX04_Repair.pdb",
+                    description: "Repair (Q9NX04)",
+                    gene: "AIRIM",
+                    uniprot: "Q9NX04"
+                },
+                {
+                    name: "OCT4 - BABAM2",
+                    pdbFile: "Q01860_Q9NXR7_Repair.pdb",
+                    description: "Repair (Q9NXR7)",
+                    gene: "BABAM2",
+                    uniprot: "Q9NXR7"
+                },
+                {
+                    name: "OCT4 - THYN1",
+                    pdbFile: "Q01860_Q9P016_Repair.pdb",
+                    description: "Repair (Q9P016)",
+                    gene: "THYN1",
+                    uniprot: "Q9P016"
+                },
+                {
+                    name: "OCT4 - HESX1",
+                    pdbFile: "Q01860_Q9UBX0_Repair.pdb",
+                    description: "Repair (Q9UBX0)",
+                    gene: "HESX1",
+                    uniprot: "Q9UBX0"
+                },
+                {
+                    name: "OCT4 - SERGEF",
+                    pdbFile: "Q01860_Q9UGK8_Repair.pdb",
+                    description: "Repair (Q9UGK8)",
+                    gene: "SERGEF",
+                    uniprot: "Q9UGK8"
+                },
+                {
+                    name: "OCT4 - NIP7",
+                    pdbFile: "Q01860_Q9Y221_Repair.pdb",
+                    description: "Repair (Q9Y221)",
+                    gene: "NIP7",
+                    uniprot: "Q9Y221"
+                },
+                {
+                    name: "OCT4 - RAX",
+                    pdbFile: "Q01860_Q9Y2V3_Repair.pdb",
+                    description: "Repair (Q9Y2V3)",
+                    gene: "RAX",
+                    uniprot: "Q9Y2V3"
+                },
+                {
+                    name: "OCT4 - RBM7",
+                    pdbFile: "Q01860_Q9Y580_Repair.pdb",
+                    description: "Repair (Q9Y580)",
+                    gene: "RBM7",
+                    uniprot: "Q9Y580"
+                },
+                {
+                    name: "OCT4 - UTP18",
+                    pdbFile: "Q01860_Q9Y5J1_Repair.pdb",
+                    description: "Repair (Q9Y5J1)",
+                    gene: "UTP18",
+                    uniprot: "Q9Y5J1"
+                },
+                {
+                    name: "OCT4 - NR2E3",
+                    pdbFile: "Q01860_Q9Y5X4_Repair.pdb",
+                    description: "Repair (Q9Y5X4)",
+                    gene: "NR2E3",
+                    uniprot: "Q9Y5X4"
+                },
+            ],
+            klf4: [
+                {
+                    name: "KLF4 - CPHXL2",
+                    pdbFile: "O43474_A0A1W2PPK0_Repair.pdb",
+                    description: "Repair (A0A1W2PPK0)",
+                    gene: "CPHXL2",
+                    uniprot: "A0A1W2PPK0"
+                },
+                {
+                    name: "KLF4 - MAFG",
+                    pdbFile: "O43474_O15525_Repair.pdb",
+                    description: "Repair (O15525)",
+                    gene: "MAFG",
+                    uniprot: "O15525"
+                },
+                {
+                    name: "KLF4 - RNMT",
+                    pdbFile: "O43474_O43148_Repair.pdb",
+                    description: "Repair (O43148)",
+                    gene: "RNMT",
+                    uniprot: "O43148"
+                },
+                {
+                    name: "KLF4 - EEF1E1",
+                    pdbFile: "O43474_O43324_Repair.pdb",
+                    description: "Repair (O43324)",
+                    gene: "EEF1E1",
+                    uniprot: "O43324"
+                },
+                {
+                    name: "KLF4 - RGS10",
+                    pdbFile: "O43474_O43665_Repair.pdb",
+                    description: "Repair (O43665)",
+                    gene: "RGS10",
+                    uniprot: "O43665"
+                },
+                {
+                    name: "KLF4 - CCNT2",
+                    pdbFile: "O43474_O60583_Repair.pdb",
+                    description: "Repair (O60583)",
+                    gene: "CCNT2",
+                    uniprot: "O60583"
+                },
+                {
+                    name: "KLF4 - ESRRB",
+                    pdbFile: "O43474_O95718_Repair.pdb",
+                    description: "Repair (O95718)",
+                    gene: "ESRRB",
+                    uniprot: "O95718"
+                },
+                {
+                    name: "KLF4 - OAS1",
+                    pdbFile: "O43474_P00973_Repair.pdb",
+                    description: "Repair (P00973)",
+                    gene: "OAS1",
+                    uniprot: "P00973"
+                },
+                {
+                    name: "KLF4 - NR3C2",
+                    pdbFile: "O43474_P08235_Repair.pdb",
+                    description: "Repair (P08235)",
+                    gene: "NR3C2",
+                    uniprot: "P08235"
+                },
+                {
+                    name: "KLF4 - RARA",
+                    pdbFile: "O43474_P10276_Repair.pdb",
+                    description: "Repair (P10276)",
+                    gene: "RARA",
+                    uniprot: "P10276"
+                },
+                {
+                    name: "KLF4 - TXN",
+                    pdbFile: "O43474_P10599_Repair.pdb",
+                    description: "Repair (P10599)",
+                    gene: "TXN",
+                    uniprot: "P10599"
+                },
+                {
+                    name: "KLF4 - RARB",
+                    pdbFile: "O43474_P10826_Repair.pdb",
+                    description: "Repair (P10826)",
+                    gene: "RARB",
+                    uniprot: "P10826"
+                },
+                {
+                    name: "KLF4 - ERG",
+                    pdbFile: "O43474_P11308_Repair.pdb",
+                    description: "Repair (P11308)",
+                    gene: "ERG",
+                    uniprot: "P11308"
+                },
+                {
+                    name: "KLF4 - VDR",
+                    pdbFile: "O43474_P11473_Repair.pdb",
+                    description: "Repair (P11473)",
+                    gene: "VDR",
+                    uniprot: "P11473"
+                },
+                {
+                    name: "KLF4 - RARG",
+                    pdbFile: "O43474_P13631_Repair.pdb",
+                    description: "Repair (P13631)",
+                    gene: "RARG",
+                    uniprot: "P13631"
+                },
+                {
+                    name: "KLF4 - GADD45A",
+                    pdbFile: "O43474_P24522_Repair.pdb",
+                    description: "Repair (P24522)",
+                    gene: "GADD45A",
+                    uniprot: "P24522"
+                },
+                {
+                    name: "KLF4 - RPS12",
+                    pdbFile: "O43474_P25398_Repair.pdb",
+                    description: "Repair (P25398)",
+                    gene: "RPS12",
+                    uniprot: "P25398"
+                },
+                {
+                    name: "KLF4 - RORA",
+                    pdbFile: "O43474_P35398_Repair.pdb",
+                    description: "Repair (P35398)",
+                    gene: "RORA",
+                    uniprot: "P35398"
+                },
+                {
+                    name: "KLF4 - CDK7",
+                    pdbFile: "O43474_P50613_Repair.pdb",
+                    description: "Repair (P50613)",
+                    gene: "CDK7",
+                    uniprot: "P50613"
+                },
+                {
+                    name: "KLF4 - CLNS1A",
+                    pdbFile: "O43474_P54105_Repair.pdb",
+                    description: "Repair (P54105)",
+                    gene: "CLNS1A",
+                    uniprot: "P54105"
+                },
+                {
+                    name: "KLF4 - NR1H2",
+                    pdbFile: "O43474_P55055_Repair.pdb",
+                    description: "Repair (P55055)",
+                    gene: "NR1H2",
+                    uniprot: "P55055"
+                },
+                {
+                    name: "KLF4 - CDKN2D",
+                    pdbFile: "O43474_P55273_Repair.pdb",
+                    description: "Repair (P55273)",
+                    gene: "CDKN2D",
+                    uniprot: "P55273"
+                },
+                {
+                    name: "KLF4 - ESRRG",
+                    pdbFile: "O43474_P62508_Repair.pdb",
+                    description: "Repair (P62508)",
+                    gene: "ESRRG",
+                    uniprot: "P62508"
+                },
+                {
+                    name: "KLF4 - SPIB",
+                    pdbFile: "O43474_Q01892_Repair.pdb",
+                    description: "Repair (Q01892)",
+                    gene: "SPIB",
+                    uniprot: "Q01892"
+                },
+                {
+                    name: "KLF4 - NR0B2",
+                    pdbFile: "O43474_Q15466_Repair.pdb",
+                    description: "Repair (Q15466)",
+                    gene: "NR0B2",
+                    uniprot: "Q15466"
+                },
+                {
+                    name: "KLF4 - MLF2",
+                    pdbFile: "O43474_Q15773_Repair.pdb",
+                    description: "Repair (Q15773)",
+                    gene: "MLF2",
+                    uniprot: "Q15773"
+                },
+                {
+                    name: "KLF4 - MIDN",
+                    pdbFile: "O43474_Q504T8_Repair.pdb",
+                    description: "Repair (Q504T8)",
+                    gene: "MIDN",
+                    uniprot: "Q504T8"
+                },
+                {
+                    name: "KLF4 - UTP25",
+                    pdbFile: "O43474_Q68CQ4_Repair.pdb",
+                    description: "Repair (Q68CQ4)",
+                    gene: "UTP25",
+                    uniprot: "Q68CQ4"
+                },
+                {
+                    name: "KLF4 - XRRA1",
+                    pdbFile: "O43474_Q6P2D8_Repair.pdb",
+                    description: "Repair (Q6P2D8)",
+                    gene: "XRRA1",
+                    uniprot: "Q6P2D8"
+                },
+                {
+                    name: "KLF4 - DPPA2",
+                    pdbFile: "O43474_Q7Z7J5_Repair.pdb",
+                    description: "Repair (Q7Z7J5)",
+                    gene: "DPPA2",
+                    uniprot: "Q7Z7J5"
+                },
+                {
+                    name: "KLF4 - FANK1",
+                    pdbFile: "O43474_Q8TC84_Repair.pdb",
+                    description: "Repair (Q8TC84)",
+                    gene: "FANK1",
+                    uniprot: "Q8TC84"
+                },
+                {
+                    name: "KLF4 - NEK7",
+                    pdbFile: "O43474_Q8TDX7_Repair.pdb",
+                    description: "Repair (Q8TDX7)",
+                    gene: "NEK7",
+                    uniprot: "Q8TDX7"
+                },
+                {
+                    name: "KLF4 - U2AF1L4",
+                    pdbFile: "O43474_Q8WU68_Repair.pdb",
+                    description: "Repair (Q8WU68)",
+                    gene: "U2AF1L4",
+                    uniprot: "Q8WU68"
+                },
+                {
+                    name: "KLF4 - ESR2",
+                    pdbFile: "O43474_Q92731_Repair.pdb",
+                    description: "Repair (Q92731)",
+                    gene: "ESR2",
+                    uniprot: "Q92731"
+                },
+                {
+                    name: "KLF4 - EGLN2",
+                    pdbFile: "O43474_Q96KS0_Repair.pdb",
+                    description: "Repair (Q96KS0)",
+                    gene: "EGLN2",
+                    uniprot: "Q96KS0"
+                },
+                {
+                    name: "KLF4 - SLX1A",
+                    pdbFile: "O43474_Q9BQ83_Repair.pdb",
+                    description: "Repair (Q9BQ83)",
+                    gene: "SLX1A",
+                    uniprot: "Q9BQ83"
+                },
+                {
+                    name: "KLF4 - MGME1",
+                    pdbFile: "O43474_Q9BQP7_Repair.pdb",
+                    description: "Repair (Q9BQP7)",
+                    gene: "MGME1",
+                    uniprot: "Q9BQP7"
+                },
+                {
+                    name: "KLF4 - FTO",
+                    pdbFile: "O43474_Q9C0B1_Repair.pdb",
+                    description: "Repair (Q9C0B1)",
+                    gene: "FTO",
+                    uniprot: "Q9C0B1"
+                },
+                {
+                    name: "KLF4 - MKRN2",
+                    pdbFile: "O43474_Q9H000_Repair.pdb",
+                    description: "Repair (Q9H000)",
+                    gene: "MKRN2",
+                    uniprot: "Q9H000"
+                },
+                {
+                    name: "KLF4 - SH3BGRL3",
+                    pdbFile: "O43474_Q9H299_Repair.pdb",
+                    description: "Repair (Q9H299)",
+                    gene: "SH3BGRL3",
+                    uniprot: "Q9H299"
+                },
+                {
+                    name: "KLF4 - CUEDC2",
+                    pdbFile: "O43474_Q9H467_Repair.pdb",
+                    description: "Repair (Q9H467)",
+                    gene: "CUEDC2",
+                    uniprot: "Q9H467"
+                },
+                {
+                    name: "KLF4 - EXO5",
+                    pdbFile: "O43474_Q9H790_Repair.pdb",
+                    description: "Repair (Q9H790)",
+                    gene: "EXO5",
+                    uniprot: "Q9H790"
+                },
+                {
+                    name: "KLF4 - NEK6",
+                    pdbFile: "O43474_Q9HC98_Repair.pdb",
+                    description: "Repair (Q9HC98)",
+                    gene: "NEK6",
+                    uniprot: "Q9HC98"
+                },
+                {
+                    name: "KLF4 - SIRT3",
+                    pdbFile: "O43474_Q9NTG7_Repair.pdb",
+                    description: "Repair (Q9NTG7)",
+                    gene: "SIRT3",
+                    uniprot: "Q9NTG7"
+                },
+                {
+                    name: "KLF4 - MIS18A",
+                    pdbFile: "O43474_Q9NYP9_Repair.pdb",
+                    description: "Repair (Q9NYP9)",
+                    gene: "MIS18A",
+                    uniprot: "Q9NYP9"
+                },
+                {
+                    name: "KLF4 - LRWD1",
+                    pdbFile: "O43474_Q9UFC0_Repair.pdb",
+                    description: "Repair (Q9UFC0)",
+                    gene: "LRWD1",
+                    uniprot: "Q9UFC0"
+                },
+                {
+                    name: "KLF4 - MAD2L2",
+                    pdbFile: "O43474_Q9UI95_Repair.pdb",
+                    description: "Repair (Q9UI95)",
+                    gene: "MAD2L2",
+                    uniprot: "Q9UI95"
+                },
+                {
+                    name: "KLF4 - ING4",
+                    pdbFile: "O43474_Q9UNL4_Repair.pdb",
+                    description: "Repair (Q9UNL4)",
+                    gene: "ING4",
+                    uniprot: "Q9UNL4"
+                },
+                {
+                    name: "KLF4 - NUB1",
+                    pdbFile: "O43474_Q9Y5A7_Repair.pdb",
+                    description: "Repair (Q9Y5A7)",
+                    gene: "NUB1",
+                    uniprot: "Q9Y5A7"
+                },
+                {
+                    name: "KLF4 - UTP18",
+                    pdbFile: "O43474_Q9Y5J1_Repair.pdb",
+                    description: "Repair (Q9Y5J1)",
+                    gene: "UTP18",
+                    uniprot: "Q9Y5J1"
+                },
+                {
+                    name: "KLF4 - SIRT4",
+                    pdbFile: "O43474_Q9Y6E7_Repair.pdb",
+                    description: "Repair (Q9Y6E7)",
+                    gene: "SIRT4",
+                    uniprot: "Q9Y6E7"
+                },
+            ],
+        };
+
+
+        const proteinNames = {
+            sox2: "SOX2",
+            oct4: "OCT4",
+            klf4: "KLF4"
+        };
+
+        let stage;
+        let currentStructure = null;
+        let spinning = false;
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            stage = new NGL.Stage("viewport", {
+                backgroundColor: "black"
+            });
+
+            window.addEventListener("resize", function() {
+                stage.handleResize();
+            });
+
+            renderStructureList();
+        });
+
+        // ========== ОТРИСОВКА СПИСКА ==========
+        function renderStructureList() {
+            const listContainer = document.getElementById('structureList');
+            let globalIndex = 0;
+            
+            Object.keys(structuresByProtein).forEach(proteinKey => {
+                const structures = structuresByProtein[proteinKey];
+                const proteinName = proteinNames[proteinKey];
+                
+                if (structures.length === 0) return;
+                
+                // Создаём группу для белка
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'protein-group';
+                
+                // Заголовок группы
+                const headerDiv = document.createElement('div');
+                headerDiv.className = `protein-header ${proteinKey}`;
+                headerDiv.innerHTML = `
+                    <div class="protein-title">🧬 ${proteinName}</div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="protein-count">${structures.length}</span>
+                        <span class="collapse-icon">▼</span>
+                    </div>
+                `;
+                
+                // Контейнер для таблицы
+                const containerDiv = document.createElement('div');
+                containerDiv.className = 'structures-container';
+                
+                // Создаём таблицу
+                const table = document.createElement('table');
+                table.className = 'structures-table';
+                
+                // Заголовок таблицы
+                const thead = document.createElement('thead');
+                thead.innerHTML = `
+                    <tr>
+                        <th style="width: 45px;">View</th>
+                        <th>Gene</th>
+                        <th>UniProt</th>
+                        <th style="width: 100px;">PDB</th>
+                    </tr>
+                `;
+                table.appendChild(thead);
+                
+                // Тело таблицы
+                const tbody = document.createElement('tbody');
+                
+                structures.forEach((struct, localIndex) => {
+                    const row = document.createElement('tr');
+                    row.dataset.index = globalIndex;
+                    row.dataset.protein = proteinKey;
+                    
+                    row.innerHTML = `
+                        <td><div class="view-btn">👁</div></td>
+                        <td class="gene-cell">${struct.gene || struct.name.split(' - ')[1] || 'Unknown'}</td>
+                        <td class="uniprot-cell">${struct.uniprot || '-'}</td>
+                        <td class="pdb-cell">${struct.pdbFile.split('_').slice(0,2).join('_')}</td>
+                    `;
+                    
+                    row.onclick = () => loadStructure(globalIndex, proteinKey);
+                    tbody.appendChild(row);
+                    globalIndex++;
+                });
+                
+                table.appendChild(tbody);
+                containerDiv.appendChild(table);
+                
+                // Обработчик сворачивания/разворачивания
+                headerDiv.onclick = function() {
+                    this.classList.toggle('collapsed');
+                    containerDiv.classList.toggle('collapsed');
+                };
+                
+                groupDiv.appendChild(headerDiv);
+                groupDiv.appendChild(containerDiv);
+                listContainer.appendChild(groupDiv);
+            });
+
+            // Загрузить первую структуру по умолчанию
+            const firstProtein = Object.keys(structuresByProtein).find(
+                key => structuresByProtein[key].length > 0
+            );
+            if (firstProtein) {
+                loadStructure(0, firstProtein);
+            }
+        }
+
+        // ========== ЗАГРУЗКА СТРУКТУРЫ ==========
+        function loadStructure(globalIndex, proteinKey) {
+            // Найти структуру по глобальному индексу
+            let currentGlobalIndex = 0;
+            let struct = null;
+            
+            for (const protein of Object.keys(structuresByProtein)) {
+                const structures = structuresByProtein[protein];
+                if (globalIndex < currentGlobalIndex + structures.length) {
+                    struct = structures[globalIndex - currentGlobalIndex];
+                    break;
+                }
+                currentGlobalIndex += structures.length;
+            }
+            
+            if (!struct) return;
+            
+            // Обновить активную строку в таблице
+            document.querySelectorAll('.structures-table tbody tr').forEach((row) => {
+                if (parseInt(row.dataset.index) === globalIndex) {
+                    row.classList.add('active');
+                } else {
+                    row.classList.remove('active');
+                }
+            });
+
+            // Очистить текущую структуру
+            stage.removeAllComponents();
+
+            // Загрузить новую структуру
+            stage.loadFile(`repaired_structures/${struct.pdbFile}`)
+                .then(function(component) {
+                    currentStructure = component;
+                    component.addRepresentation("cartoon", {
+                        color: "chainindex"
+                    });
+                    component.autoView();
+                })
+                .catch(function(error) {
+                    console.error("Ошибка загрузки структуры:", error);
+                    alert(`Не удалось загрузить ${struct.pdbFile}.\nПроверьте:\n1. Файл находится в папке repaired_structures/\n2. Имя файла написано правильно`);
+                });
+        }
+
+        // ========== УПРАВЛЕНИЕ ВИЗУАЛИЗАЦИЕЙ ==========
+        function toggleSpin() {
+            spinning = !spinning;
+            stage.setSpin(spinning);
+        }
+
+        function changeRepresentation(type) {
+            if (!currentStructure) return;
+            
+            currentStructure.removeAllRepresentations();
+            currentStructure.addRepresentation(type, {
+                color: "chainindex"
+            });
+        }
+
+        function downloadPDB() {
+            const activeRow = document.querySelector('.structures-table tbody tr.active');
+            if (!activeRow) return;
+            
+            const globalIndex = parseInt(activeRow.dataset.index);
+            let currentGlobalIndex = 0;
+            let struct = null;
+            
+            for (const protein of Object.keys(structuresByProtein)) {
+                const structures = structuresByProtein[protein];
+                if (globalIndex < currentGlobalIndex + structures.length) {
+                    struct = structures[globalIndex - currentGlobalIndex];
+                    break;
+                }
+                currentGlobalIndex += structures.length;
+            }
+            
+            if (struct) {
+                window.open(`repaired_structures/${struct.pdbFile}`, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
