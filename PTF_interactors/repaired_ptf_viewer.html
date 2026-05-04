@@ -31,22 +31,16 @@ description: Repaired structures of PTF complexes with nuclear protein partners
     margin-bottom: 1rem;
   }
   .sox2-label {
-    color: #f093fb;
+    color: #e91e63;
     font-weight: bold;
-    text-shadow: 
-    0 0 2px #aa5f00,
-    0 0 2px #aa5f00,
-    0 0 2px #aa5f00,
-    0 0 2px #aa5f00;
+  }
+  .oct4-label {
+    color: #ff9800;
+    font-weight: bold;
   }
   .klf4-label {
-    color: #43e97b;
+    color: #4caf50;
     font-weight: bold;
-    text-shadow: 
-    0 0 2px #38f9d7,
-    0 0 2px #38f9d7,
-    0 0 2px #38f9d7,
-    0 0 2px #38f9d7;
   }
   .partner-label {
     color: #d3d3d3;
@@ -60,6 +54,66 @@ description: Repaired structures of PTF complexes with nuclear protein partners
   .badge-score {
     font-size: 0.9em;
     padding: 0.4em 0.6em;
+  }
+  .ptf-badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.85em;
+    font-weight: 600;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .ptf-badge.sox2 {
+    background-color: #e91e63;
+    color: white;
+  }
+  .ptf-badge.oct4 {
+    background-color: #ff9800;
+    color: white;
+  }
+  .ptf-badge.klf4 {
+    background-color: #4caf50;
+    color: white;
+  }
+  .filter-section {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  .filter-label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+    color: #333;
+  }
+  .ptf-filter-btn {
+    padding: 0.4em 1em;
+    margin: 0.25rem;
+    border: 2px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .ptf-filter-btn:hover {
+    border-color: #999;
+  }
+  .ptf-filter-btn.active.sox2 {
+    background-color: #e91e63;
+    border-color: #e91e63;
+    color: white;
+  }
+  .ptf-filter-btn.active.oct4 {
+    background-color: #ff9800;
+    border-color: #ff9800;
+    color: white;
+  }
+  .ptf-filter-btn.active.klf4 {
+    background-color: #4caf50;
+    border-color: #4caf50;
+    color: white;
   }
   .download-btn {
     background-color: #667eea;
@@ -127,13 +181,20 @@ description: Repaired structures of PTF complexes with nuclear protein partners
   </div>
   <div id="viewport"></div>
 
+  <div class="filter-section">
+    <span class="filter-label">Filter by PTF:</span>
+    <button class="ptf-filter-btn active sox2" data-ptf="sox2">SOX2</button>
+    <button class="ptf-filter-btn active oct4" data-ptf="oct4">OCT4</button>
+    <button class="ptf-filter-btn active klf4" data-ptf="klf4">KLF4</button>
+    <button class="ptf-filter-btn" data-ptf="all" style="margin-left: 1rem; font-weight: 600;">Show All</button>
+  </div>
+
   <h2>Protein Interaction Structures</h2>
   <div class="table-responsive">
     <table id="structures-table" class="table table-hover table-striped">
       <thead>
         <tr>
           <th>View</th>
-          <th>PTF</th>
           <th>Gene</th>
           <th>UniProt AC</th>
           <th>PDB</th>
@@ -161,7 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
   window.structureComponents = {};
   window.loadedStructures = [];
   
-  // ===== ВСТАВЬТЕ СЮДА structuresByProtein ИЗ ВАШЕГО СТАРОГО HTML =====
   const structuresByProtein = {
       sox2: [
           {
@@ -1942,7 +2002,6 @@ document.addEventListener('DOMContentLoaded', function() {
       ],
   };
 
-  // ===== КОНЕЦ БЛОКА ДАННЫХ =====
   
   // Преобразуем данные в формат таблицы
   const tableData = [];
@@ -1952,7 +2011,8 @@ document.addEventListener('DOMContentLoaded', function() {
     structures.forEach(struct => {
       tableData.push({
         view: `<input type="checkbox" class="struct-toggle" id="struct-${index}" data-pdb="${struct.pdbFile}" data-gene="${struct.gene}" data-ptf="${ptfKey}">`,
-        ptf: ptfKey.toUpperCase(),
+        ptf: ptfKey,
+        ptfBadge: `<span class="ptf-badge ${ptfKey}">${ptfKey.toUpperCase()}</span>`,
         gene: struct.gene,
         gene_link: `<a href="https://www.genecards.org/cgi-bin/carddisp.pl?gene=${struct.gene}" target="_blank" class="gene-link">${struct.gene}</a>`,
         uniprot: struct.uniprot,
@@ -1970,11 +2030,6 @@ document.addEventListener('DOMContentLoaded', function() {
         data: 'view',
         title: "View",
         orderable: false,
-        className: "dt-center"
-      },
-      { 
-        data: 'ptf',
-        title: "PTF",
         className: "dt-center"
       },
       { 
@@ -2007,7 +2062,47 @@ document.addEventListener('DOMContentLoaded', function() {
     createdRow: function(row, data) {
       $(row).attr('data-gene', data.gene);
       $(row).attr('data-uniprot', data.uniprot);
+      $(row).attr('data-ptf', data.ptf);
     }
+  });
+
+  // Фильтр по PTF
+  window.activePtfFilters = new Set(['sox2', 'oct4', 'klf4']);
+  
+  $('.ptf-filter-btn').on('click', function() {
+    const ptf = $(this).data('ptf');
+    
+    if (ptf === 'all') {
+      // Show all
+      window.activePtfFilters = new Set(['sox2', 'oct4', 'klf4']);
+      $('.ptf-filter-btn').not('[data-ptf="all"]').addClass('active');
+    } else {
+      // Toggle specific PTF
+      if (window.activePtfFilters.has(ptf)) {
+        window.activePtfFilters.delete(ptf);
+        $(this).removeClass('active');
+      } else {
+        window.activePtfFilters.add(ptf);
+        $(this).addClass('active');
+      }
+    }
+    
+    // Apply filter
+    $.fn.dataTable.ext.search.pop(); // Remove old filter
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+      const row = table.row(dataIndex).node();
+      const rowPtf = $(row).attr('data-ptf');
+      return window.activePtfFilters.has(rowPtf);
+    });
+    
+    table.draw();
+  });
+  
+  // Initialize filter
+  $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+    const row = table.row(dataIndex).node();
+    const rowPtf = $(row).attr('data-ptf');
+    return window.activePtfFilters.has(rowPtf);
   });
 
   setTimeout(() => {
@@ -2059,7 +2154,12 @@ document.addEventListener('DOMContentLoaded', function() {
           window.structureComponents[pdbFile] = component;
           window.loadedStructures.push(component.structure);
           
-          const ptfColor = ptfKey === 'sox2' ? '#f093fb' : '#43e97b';
+          const ptfColors = {
+            'sox2': '#e91e63',
+            'oct4': '#ff9800', 
+            'klf4': '#4caf50'
+          };
+          const ptfColor = ptfColors[ptfKey] || '#999999';
           
           component.addRepresentation('cartoon', {
             sele: ":A", color: ptfColor, aspectRatio: 2, radius: 1.5
@@ -2105,7 +2205,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       const ptfs = [...new Set(window.selectedProteins.map(p => p.ptf))];
       const ptfLabels = ptfs.map(ptf => {
-        const className = ptf === 'sox2' ? 'sox2-label' : 'klf4-label';
+        const className = `${ptf}-label`;
         return `<span class="${className}">${ptf.toUpperCase()}</span>`;
       }).join(' + ');
       
