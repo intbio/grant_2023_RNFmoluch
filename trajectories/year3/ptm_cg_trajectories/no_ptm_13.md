@@ -1,4 +1,4 @@
-### Траектория огрубленной фибриллы с ацетилированием гистоновых хвостов.
+### Траектория огрубленной фибриллы без ПТМ гистоновых хвостов.
 [Назад](http://intbio.github.io/grant_2023_RNFmoluch/year3)
 
 <html lang="en">
@@ -48,8 +48,8 @@
 <script src="https://unpkg.com/ngl@2.0.0-dev.35/dist/ngl.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script>
-  var pdb="no_ptm_13.pdb"
-  var xtc="no_ptm_13.xtc"
+  var pdb="no_ptm_13.pqr";
+  var xtc="no_ptm_13.xtc";
   var trjstep = 4000;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
