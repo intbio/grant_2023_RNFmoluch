@@ -1,6 +1,4 @@
-### Траектория огрубленной фибриллы без ПТМ гистоновых хвостов.
-[Назад](http://intbio.github.io/grant_2023_RNFmoluch/year3)
-
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -61,7 +59,21 @@
 
     window.stage.loadFile(pdb).then(function(nucl) {
 
+      // базовая визуализация
       nucl.addRepresentation("spacefill");
+
+      // ДОБАВЛЕНО: выделение P и D с физическим стилем
+      nucl.addRepresentation("spacefill", {
+        sele: ":P",
+        colorScheme: "partialCharge",
+        radiusType: "explicit"
+      });
+
+      nucl.addRepresentation("spacefill", {
+        sele: ":D",
+        colorScheme: "partialCharge",
+        radiusType: "explicit"
+      });
 
       NGL.autoLoad(xtc).then(function(frames) {
 
@@ -69,7 +81,7 @@
 
         window.traj = nucl.trajList[0].trajectory;
 
-        window.traj.setFrame(0);
+        // плеер траектории
         window.traj.player =
           new NGL.TrajectoryPlayer(window.traj, {
             start: 0,
@@ -82,6 +94,13 @@
 
         window.isInternalSliderUpdate = false;
 
+        // безопасная установка первого кадра
+        setTimeout(function() {
+          window.traj.setFrame(0);
+          document.getElementById("frame_counter").innerHTML = 0;
+        }, 50);
+
+        // синхронизация слайдера и кадров
         window.traj.signals.frameChanged.add(function() {
 
           var fnum = window.traj.currentFrame;
@@ -113,15 +132,9 @@
 
     slider.oninput = function() {
 
-      // ignore internal slider updates
-      if (window.isInternalSliderUpdate) {
-        return;
-      }
+      if (window.isInternalSliderUpdate) return;
 
-      if (
-        window.traj &&
-        window.traj.player
-      ) {
+      if (window.traj && window.traj.player) {
         window.traj.player.pause();
       }
 
