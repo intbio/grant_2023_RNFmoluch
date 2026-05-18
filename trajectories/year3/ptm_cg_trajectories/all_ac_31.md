@@ -48,34 +48,15 @@
 <script src="https://unpkg.com/ngl@2.0.0-dev.35/dist/ngl.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script>
-  var pdb="all_ac_31.pdb"
+  var pdb="all_ac_31.pqr"
   var xtc="all_ac_31.xtc"
-  var trjstep = 4000;
+  var trjstep = 1;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
     });
     window.stage.loadFile(pdb).then(function(nucl) {
-      var aspectRatio = 2;
-      var radius = 1.5;
-      var radiusScale = 4;
 
-
-      var hyper_scheme = NGL.ColormakerRegistry.addSelectionScheme([
-        ["orange", ".CA"],
-        ["blue", "_N"],
-        ["red", "_O"],
-        ["grey", "*"]
-      ], "DA");
-      var residues = NGL.ColormakerRegistry.addSelectionScheme([
-        ["blue", "40 and ARG"],
-	["lightcyan", "42 and ARG"],
-	["cyan", "49 and ARG"],
-        ["green", "41 and TYR"],
-	["pink", "39 and HIS"],
-        ["white", "*"]
-      ], "protein");
-      
       var shape = new NGL.Shape( "Axes" );
 			shape.addArrow( [ 0, 0, -35 ], [ 0, 0, 35 ], [ 0.04, 0.8, 0.03 ], 2.0 );
       shape.addArrow( [ -58, 0, 0 ], [ 58, 0, 0 ], [ 0.8,0.06 ,0.102  ], 2.0 );
@@ -89,12 +70,6 @@
 
 
       nucl.addRepresentation("spacefill", {
-        sele: ":P",
-        colorScheme: "partialCharge",
-        radiusType: "explicit"
-      });
-      nucl.addRepresentation("spacefill", {
-        sele: ":D",
         colorScheme: "partialCharge",
         radiusType: "explicit"
       });
@@ -148,37 +123,6 @@
       //  .attr('y2', height);
     }
     
-
-
-    function load_reference_structure() {
-      window.ref_str_mol = window.stage.loadFile(pdb).then(function(nucl) {
-        window.ref_str_mol = nucl;
-        window.ref_str_repr_prot = nucl.addRepresentation('spacefill', {
-          "sele": 'protein',
-          "color": '#29d6d9',
-          "aspectRatio": 2,
-          'radiusScale': 4.1,
-          'radiusType': 'sstruc',
-          "aspectRatio": 2,
-          "radiusSegments": 1,
-          "capped": 0
-
-        });
-        window.ref_str_repr_nucl = nucl.addRepresentation('spacefill', {
-          "sele": 'nucleic',
-          "color": '#29d6d9',
-          "aspectRatio": 2,
-          "radius": 1.51,
-          "radiusSegments": 1,
-          "capped": 0
-        });
-        window.ref_str_repr_base = nucl.addRepresentation('base', {
-          "sele": 'nucleic',
-          "color": '#29d6d9'
-        });
-      })
-    }
-
 
 
     var margin = {
