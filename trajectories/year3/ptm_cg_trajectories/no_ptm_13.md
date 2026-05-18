@@ -51,6 +51,8 @@
   var pdb="no_ptm_13.pqr";
   var xtc="no_ptm_13.xtc";
   var trjstep = 4000;
+  var player = new NGL.TrajectoryPlayer(window.traj, {...});
+  window.traj.player = player;
   $(document).ready(function() {
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
