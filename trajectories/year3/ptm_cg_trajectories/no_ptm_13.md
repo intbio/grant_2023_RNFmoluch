@@ -24,24 +24,20 @@
     }
 
     .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
       width: 15px;
       height: 15px;
-      background: #222222;
-      cursor: pointer;
-    }
-
-    .slider::-moz-range-thumb {
-      width: 25px;
-      height: 25px;
-      background: #4CAF50;
+      background: #222;
       cursor: pointer;
     }
   </style>
 </head>
 
 <body>
+
+<!-- ✔️ ВЕРНУЛ НАЗАД -->
+<p>
+  <a href="http://intbio.github.io/grant_2023_RNFmoluch/year3">← Назад</a>
+</p>
 
 <script src="https://unpkg.com/ngl@2.0.0-dev.35/dist/ngl.js"></script>
 
@@ -53,16 +49,23 @@
 
   document.addEventListener("DOMContentLoaded", function() {
 
+    // кнопки выключены до загрузки траектории
+    function setControlsEnabled(state) {
+      document.getElementById("play").disabled = !state;
+      document.getElementById("pause").disabled = !state;
+      document.getElementById("myRange").disabled = !state;
+    }
+
+    setControlsEnabled(false);
+
     window.stage = new NGL.Stage("viewport0", {
       backgroundColor: "#FFFFFF"
     });
 
     window.stage.loadFile(pdb).then(function(nucl) {
 
-      // базовая визуализация
       nucl.addRepresentation("spacefill");
 
-      // ДОБАВЛЕНО: выделение P и D с физическим стилем
       nucl.addRepresentation("spacefill", {
         sele: ":P",
         colorScheme: "partialCharge",
@@ -81,7 +84,6 @@
 
         window.traj = nucl.trajList[0].trajectory;
 
-        // плеер траектории
         window.traj.player =
           new NGL.TrajectoryPlayer(window.traj, {
             start: 0,
@@ -94,13 +96,14 @@
 
         window.isInternalSliderUpdate = false;
 
-        // безопасная установка первого кадра
+        // включаем кнопки ТОЛЬКО когда всё готово
+        setControlsEnabled(true);
+
         setTimeout(function() {
           window.traj.setFrame(0);
           document.getElementById("frame_counter").innerHTML = 0;
         }, 50);
 
-        // синхронизация слайдера и кадров
         window.traj.signals.frameChanged.add(function() {
 
           var fnum = window.traj.currentFrame;
@@ -117,10 +120,7 @@
         });
 
         document.getElementById("myRange")
-          .setAttribute(
-            "max",
-            window.traj.frames.length - 1
-          );
+          .setAttribute("max", window.traj.frames.length - 1);
 
       });
 
@@ -139,7 +139,6 @@
       }
 
       window.traj.setFrame(this.value);
-
     };
 
   });
@@ -148,46 +147,25 @@
 
 <br>
 
-<div
-  id="viewport0"
-  style="height:500px; border: thin solid black">
-</div>
+<div id="viewport0" style="height:500px; border: thin solid black"></div>
 
 <div class="slidecontainer">
 
-  <button
-    type="button"
-    id="play"
-    onclick="
-      if(window.traj && window.traj.player){
-        window.traj.player.play();
-      }
-    ">
+  <button id="play" disabled
+    onclick="if(window.traj && window.traj.player){ window.traj.player.play(); }">
     Play
   </button>
 
-  <button
-    type="button"
-    id="pause"
-    onclick="
-      if(window.traj && window.traj.player){
-        window.traj.player.pause();
-      }
-    ">
+  <button id="pause" disabled
+    onclick="if(window.traj && window.traj.player){ window.traj.player.pause(); }">
     Pause
   </button>
 
-  <input
-    type="range"
-    min="0"
-    max="100"
-    value="0"
-    class="slider"
-    id="myRange">
+  <input type="range" min="0" max="100" value="0"
+    class="slider" id="myRange" disabled>
 
   <p>
-    Frame:
-    <span id="frame_counter">0</span>
+    Frame: <span id="frame_counter">0</span>
   </p>
 
 </div>
